@@ -1,0 +1,1747 @@
+{
+    "VC Fund Quarterly Report": {
+        "color": "#F18F01",
+        "sub_datasets": [
+            {
+                "name": "Fund Overview",
+                "multiple": false,
+                "prime_fields": ["fund_name_legal", "fund_identifier"]
+            },
+            {
+                "name": "Reporting Period Details",
+                "multiple": false,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year"]
+            },
+            {
+                "name": "Fund Performance Summary",
+                "multiple": false,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year"]
+            },
+            {
+                "name": "Capital Activity",
+                "multiple": false,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year"]
+            },
+            {
+                "name": "Current Investments",
+                "multiple": true,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year", "portfolio_company_name"]
+            },
+            {
+                "name": "Realized Investments",
+                "multiple": true,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year", "portfolio_company_name"]
+            },
+            {
+                "name": "New Investments",
+                "multiple": true,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year", "portfolio_company_name"]
+            },
+            {
+                "name": "Follow-on Investments",
+                "multiple": true,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year", "portfolio_company_name", "investment_date"]
+            },
+            {
+                "name": "Write-offs and Write-downs",
+                "multiple": true,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year", "portfolio_company_name"]
+            },
+            {
+                "name": "Fair Value Adjustments",
+                "multiple": true,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year", "portfolio_company_name"]
+            },
+            {
+                "name": "LP Distribution Schedule",
+                "multiple": true,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year", "distribution_date"]
+            },
+            {
+                "name": "Capital Call Schedule",
+                "multiple": true,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year", "call_date"]
+            },
+            {
+                "name": "Limited Partners",
+                "multiple": true,
+                "prime_fields": ["fund_name_legal", "lp_name"]
+            },
+            {
+                "name": "Fund Expenses",
+                "multiple": true,
+                "prime_fields": ["fund_name_legal", "reporting_quarter", "reporting_year", "expense_category"]
+            }
+        ],
+        "instruction_sets": {
+            "Default": {
+                "Fund Overview": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Full legal name of the fund",
+                        "AI-instruction": "Extract the complete legal name of the venture capital or private equity fund (e.g., 'Sequoia Capital Global Growth Fund III, L.P.').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_short_name",
+                        "data_type": "text",
+                        "description": "Short or marketing name of the fund",
+                        "AI-instruction": "Extract the abbreviated name if different from legal name (e.g., 'SCGG Fund III').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_identifier",
+                        "data_type": "text",
+                        "description": "Unique fund identifier or reference number",
+                        "AI-instruction": "Extract any unique identifier, fund number, or internal reference code assigned to this fund.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_vintage_year",
+                        "data_type": "number",
+                        "description": "Year the fund was established",
+                        "AI-instruction": "Extract the vintage year - the year the fund began making investments (4-digit year, e.g., 2021).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_inception_date",
+                        "data_type": "date",
+                        "description": "Date the fund was formally established",
+                        "AI-instruction": "Extract the fund's inception or first closing date. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "final_close_date",
+                        "data_type": "date",
+                        "description": "Date of the fund's final closing",
+                        "AI-instruction": "Extract the final closing date when fundraising was completed. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_type",
+                        "data_type": "text",
+                        "description": "Type of fund strategy",
+                        "AI-instruction": "Classify the fund type: Venture Capital, Growth Equity, Buyout, Mezzanine, Secondary, Fund of Funds, etc.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Venture Capital - Seed, Venture Capital - Early Stage, Venture Capital - Growth, Growth Equity, Buyout, Mezzanine, Distressed Debt, Secondary, Fund of Funds, Real Assets, Infrastructure"
+                    },
+                    {
+                        "header": "investment_focus",
+                        "data_type": "text",
+                        "description": "Primary investment focus or sector",
+                        "AI-instruction": "Extract the fund's stated investment focus (e.g., 'Technology - Enterprise Software', 'Healthcare - Biotech', 'Consumer Internet').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "geographic_focus",
+                        "data_type": "text",
+                        "description": "Geographic investment mandate",
+                        "AI-instruction": "Extract the geographic focus (e.g., 'Global', 'North America', 'Europe', 'Asia-Pacific', 'United States').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_domicile",
+                        "data_type": "text",
+                        "description": "Legal domicile of the fund",
+                        "AI-instruction": "Extract where the fund is legally domiciled (e.g., 'Delaware, USA', 'Cayman Islands', 'Luxembourg').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "general_partner",
+                        "data_type": "text",
+                        "description": "Name of the General Partner entity",
+                        "AI-instruction": "Extract the name of the GP (General Partner) entity managing the fund.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "management_company",
+                        "data_type": "text",
+                        "description": "Name of the management company",
+                        "AI-instruction": "Extract the management company or investment advisor name if different from GP.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_administrator",
+                        "data_type": "text",
+                        "description": "Name of the fund administrator",
+                        "AI-instruction": "Extract the name of the third-party fund administrator (e.g., 'SS&C', 'Apex', 'Citco').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "auditor",
+                        "data_type": "text",
+                        "description": "Name of the external auditor",
+                        "AI-instruction": "Extract the name of the audit firm (Deloitte, PwC, EY, KPMG, etc.).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Deloitte, PricewaterhouseCoopers, Ernst & Young, KPMG, BDO, Grant Thornton, RSM, Other"
+                    },
+                    {
+                        "header": "target_fund_size",
+                        "data_type": "currency",
+                        "description": "Target fund size at inception",
+                        "AI-instruction": "Extract the target fund size that was set during fundraising.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "hard_cap",
+                        "data_type": "currency",
+                        "description": "Maximum fund size (hard cap)",
+                        "AI-instruction": "Extract the hard cap - maximum amount the fund can raise.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "total_commitments",
+                        "data_type": "currency",
+                        "description": "Total LP commitments to the fund",
+                        "AI-instruction": "Extract the total capital committed by all Limited Partners.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_currency",
+                        "data_type": "text",
+                        "description": "Base currency of the fund",
+                        "AI-instruction": "Extract the base currency in which the fund operates (USD, EUR, GBP, etc.).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "USD, EUR, GBP, CHF, CAD, AUD, SGD, HKD"
+                    },
+                    {
+                        "header": "investment_period_end_date",
+                        "data_type": "date",
+                        "description": "End date of the investment period",
+                        "AI-instruction": "Extract when the investment period ends (typically 3-5 years from inception). Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_term_years",
+                        "data_type": "number",
+                        "description": "Total fund term in years",
+                        "AI-instruction": "Extract the total fund term (typically 10-12 years). Enter as a number (e.g., 10).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "management_fee_rate",
+                        "data_type": "percentage",
+                        "description": "Management fee percentage",
+                        "AI-instruction": "Extract the annual management fee rate as a percentage (e.g., 2.0 for 2%).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "carried_interest_rate",
+                        "data_type": "percentage",
+                        "description": "Carried interest (carry) percentage",
+                        "AI-instruction": "Extract the carried interest rate (typically 20-30%). Express as percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "hurdle_rate",
+                        "data_type": "percentage",
+                        "description": "Preferred return or hurdle rate",
+                        "AI-instruction": "Extract the hurdle rate or preferred return that LPs must achieve before carry kicks in. Express as percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Reporting Period Details": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Quarter being reported (Q1, Q2, Q3, Q4)",
+                        "AI-instruction": "Extract the quarter: Q1, Q2, Q3, or Q4.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Q1, Q2, Q3, Q4"
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Year of the reporting period",
+                        "AI-instruction": "Extract the calendar year of the reporting period (4-digit year, e.g., 2024).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "quarter_start_date",
+                        "data_type": "date",
+                        "description": "First day of the reporting quarter",
+                        "AI-instruction": "Extract the start date of this quarter. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "quarter_end_date",
+                        "data_type": "date",
+                        "description": "Last day of the reporting quarter",
+                        "AI-instruction": "Extract the end date of this quarter (the 'as of' date). Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "report_date",
+                        "data_type": "date",
+                        "description": "Date the report was prepared",
+                        "AI-instruction": "Extract the date this report was prepared or issued to LPs. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_age_months",
+                        "data_type": "number",
+                        "description": "Fund age in months as of quarter end",
+                        "AI-instruction": "Calculate or extract the fund's age in months from inception to quarter end.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_age_years",
+                        "data_type": "number",
+                        "description": "Fund age in years as of quarter end",
+                        "AI-instruction": "Calculate or extract the fund's age in years (can be decimal, e.g., 3.5).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "is_investment_period_active",
+                        "data_type": "boolean",
+                        "description": "Whether fund is still in investment period",
+                        "AI-instruction": "Determine if the fund is still in its investment period (True) or in harvest/exit mode (False).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "valuation_date",
+                        "data_type": "date",
+                        "description": "Date when portfolio valuations were performed",
+                        "AI-instruction": "Extract the valuation date for portfolio holdings (usually quarter end). Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Fund Performance Summary": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Reference to reporting quarter",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same quarter.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_quarter"
+                        }
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Reference to reporting year",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_year"
+                        }
+                    },
+                    {
+                        "header": "gross_irr",
+                        "data_type": "percentage",
+                        "description": "Gross Internal Rate of Return",
+                        "AI-instruction": "Extract the gross IRR (before fees and carry). Express as percentage (e.g., 28.5 for 28.5%).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "net_irr",
+                        "data_type": "percentage",
+                        "description": "Net Internal Rate of Return to LPs",
+                        "AI-instruction": "Extract the net IRR after fees and carry. Express as percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "gross_moic",
+                        "data_type": "number",
+                        "description": "Gross Multiple on Invested Capital",
+                        "AI-instruction": "Extract the gross MOIC (Total Value / Invested Capital). Express as a multiple (e.g., 2.3 for 2.3x).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "net_moic",
+                        "data_type": "number",
+                        "description": "Net Multiple on Invested Capital to LPs",
+                        "AI-instruction": "Extract the net MOIC after fees and carry. Express as a multiple.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "tvpi",
+                        "data_type": "number",
+                        "description": "Total Value to Paid-In Capital",
+                        "AI-instruction": "Extract TVPI = (Distributions + NAV) / Called Capital. Express as a multiple.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "dpi",
+                        "data_type": "number",
+                        "description": "Distributions to Paid-In Capital",
+                        "AI-instruction": "Extract DPI = Cumulative Distributions / Called Capital. Express as a multiple (e.g., 0.8 for 0.8x).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "rvpi",
+                        "data_type": "number",
+                        "description": "Residual Value to Paid-In Capital",
+                        "AI-instruction": "Extract RVPI = Current NAV / Called Capital. Express as a multiple.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "nav",
+                        "data_type": "currency",
+                        "description": "Net Asset Value as of quarter end",
+                        "AI-instruction": "Extract the total Net Asset Value of the fund as of the valuation date.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "nav_per_share",
+                        "data_type": "currency",
+                        "description": "NAV per unit or share",
+                        "AI-instruction": "Extract the NAV per partnership unit or share if the fund has unit accounting.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "unrealized_gain_loss",
+                        "data_type": "currency",
+                        "description": "Unrealized gains or losses for the quarter",
+                        "AI-instruction": "Extract the change in unrealized value during this quarter. Positive = gain, negative = loss.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "realized_gain_loss",
+                        "data_type": "currency",
+                        "description": "Realized gains or losses for the quarter",
+                        "AI-instruction": "Extract the realized gains or losses from exits during this quarter.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "number_of_portfolio_companies",
+                        "data_type": "number",
+                        "description": "Total number of active portfolio companies",
+                        "AI-instruction": "Extract the total count of portfolio companies held as of quarter end.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "number_of_full_exits",
+                        "data_type": "number",
+                        "description": "Number of complete exits since inception",
+                        "AI-instruction": "Extract the cumulative number of companies that have been fully exited.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "number_of_partial_exits",
+                        "data_type": "number",
+                        "description": "Number of partial exits since inception",
+                        "AI-instruction": "Extract the count of positions that have been partially liquidated.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Capital Activity": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Reference to reporting quarter",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same quarter.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_quarter"
+                        }
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Reference to reporting year",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_year"
+                        }
+                    },
+                    {
+                        "header": "capital_called_qtd",
+                        "data_type": "currency",
+                        "description": "Capital called during this quarter",
+                        "AI-instruction": "Extract the total capital called from LPs during this quarter (QTD).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "capital_called_ytd",
+                        "data_type": "currency",
+                        "description": "Capital called year-to-date",
+                        "AI-instruction": "Extract the total capital called so far this year (YTD).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "capital_called_cumulative",
+                        "data_type": "currency",
+                        "description": "Total capital called since inception",
+                        "AI-instruction": "Extract the cumulative capital called from LPs since fund inception.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "percent_called",
+                        "data_type": "percentage",
+                        "description": "Percentage of commitments called",
+                        "AI-instruction": "Calculate or extract: (Cumulative Called / Total Commitments) × 100.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "invested_qtd",
+                        "data_type": "currency",
+                        "description": "Amount invested in portfolio companies this quarter",
+                        "AI-instruction": "Extract the total deployed into investments during this quarter.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "invested_ytd",
+                        "data_type": "currency",
+                        "description": "Amount invested year-to-date",
+                        "AI-instruction": "Extract the total deployed into investments so far this year.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "invested_cumulative",
+                        "data_type": "currency",
+                        "description": "Total amount invested since inception",
+                        "AI-instruction": "Extract the cumulative capital invested in portfolio companies.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "distributions_qtd",
+                        "data_type": "currency",
+                        "description": "Distributions to LPs this quarter",
+                        "AI-instruction": "Extract the total distributions paid to LPs during this quarter.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "distributions_ytd",
+                        "data_type": "currency",
+                        "description": "Distributions to LPs year-to-date",
+                        "AI-instruction": "Extract the total distributions paid to LPs so far this year.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "distributions_cumulative",
+                        "data_type": "currency",
+                        "description": "Total distributions since inception",
+                        "AI-instruction": "Extract the cumulative distributions paid to LPs since inception.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "unfunded_commitments",
+                        "data_type": "currency",
+                        "description": "Remaining unfunded LP commitments",
+                        "AI-instruction": "Calculate or extract: Total Commitments - Capital Called.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "management_fees_qtd",
+                        "data_type": "currency",
+                        "description": "Management fees charged this quarter",
+                        "AI-instruction": "Extract the management fees charged during this quarter.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "management_fees_ytd",
+                        "data_type": "currency",
+                        "description": "Management fees charged year-to-date",
+                        "AI-instruction": "Extract the management fees charged so far this year.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "management_fees_cumulative",
+                        "data_type": "currency",
+                        "description": "Total management fees since inception",
+                        "AI-instruction": "Extract the cumulative management fees charged since inception.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_expenses_qtd",
+                        "data_type": "currency",
+                        "description": "Total fund expenses this quarter",
+                        "AI-instruction": "Extract the total fund-level expenses (excluding management fees) for this quarter.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_expenses_ytd",
+                        "data_type": "currency",
+                        "description": "Total fund expenses year-to-date",
+                        "AI-instruction": "Extract the total fund expenses so far this year.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Current Investments": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Reference to reporting quarter",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same quarter.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_quarter"
+                        }
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Reference to reporting year",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_year"
+                        }
+                    },
+                    {
+                        "header": "portfolio_company_name",
+                        "data_type": "text",
+                        "description": "Name of the portfolio company",
+                        "AI-instruction": "Extract the name of the portfolio company. Use the legal name if available, otherwise the trading name.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "company_identifier",
+                        "data_type": "text",
+                        "description": "Unique identifier for the company",
+                        "AI-instruction": "Extract any unique company identifier (internal reference, LEI, registration number) used for tracking.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "initial_investment_date",
+                        "data_type": "date",
+                        "description": "Date of initial investment",
+                        "AI-instruction": "Extract the date of the fund's first investment in this company. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "investment_stage",
+                        "data_type": "text",
+                        "description": "Stage at which investment was made",
+                        "AI-instruction": "Classify the investment stage: Seed, Series A, Series B, Series C+, Growth, Buyout, etc.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Seed, Pre-Series A, Series A, Series B, Series C, Series D+, Growth, Late Stage, Buyout, Secondary"
+                    },
+                    {
+                        "header": "sector",
+                        "data_type": "text",
+                        "description": "Industry sector of the company",
+                        "AI-instruction": "Extract or classify the company's primary sector (e.g., Enterprise SaaS, Consumer Internet, Fintech, Healthcare, Biotech).",
+                        "extraction_method": "list",
+                        "lookup_enabled": true,
+                        "allowed_values": "",
+                        "lookup_file": "/Users/username/Documents/EagleEye/Lookups/vc_sectors.xlsx",
+                        "lookup_column": "Sector_Name",
+                        "key_column": "Sector_Code"
+                    },
+                    {
+                        "header": "geography",
+                        "data_type": "text",
+                        "description": "Geographic location of company headquarters",
+                        "AI-instruction": "Extract the country or region where the company is headquartered.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "security_type",
+                        "data_type": "text",
+                        "description": "Type of security held",
+                        "AI-instruction": "Identify the security type: Preferred Equity, Common Equity, Convertible Note, SAFE, Warrants, Debt, etc.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Preferred Stock, Common Stock, Convertible Preferred, Convertible Note, SAFE, Warrants, Senior Debt, Subordinated Debt, Mezzanine, Other"
+                    },
+                    {
+                        "header": "total_cost_basis",
+                        "data_type": "currency",
+                        "description": "Total amount invested in this company",
+                        "AI-instruction": "Extract the cumulative cost basis - total capital deployed including all rounds and follow-ons.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "current_fair_value",
+                        "data_type": "currency",
+                        "description": "Current fair value as of quarter end",
+                        "AI-instruction": "Extract the fair market value of the position as of the valuation date.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "unrealized_gain_loss",
+                        "data_type": "currency",
+                        "description": "Unrealized gain or loss on position",
+                        "AI-instruction": "Calculate or extract: Current Fair Value - Total Cost Basis. Positive = gain, negative = loss.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "unrealized_moic",
+                        "data_type": "number",
+                        "description": "Unrealized multiple on invested capital",
+                        "AI-instruction": "Calculate or extract: Current Fair Value / Total Cost Basis. Express as multiple (e.g., 1.5 for 1.5x).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "percent_of_nav",
+                        "data_type": "percentage",
+                        "description": "Position size as percentage of fund NAV",
+                        "AI-instruction": "Calculate or extract: (Current Fair Value / Fund NAV) × 100.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "ownership_percentage",
+                        "data_type": "percentage",
+                        "description": "Ownership stake in the company",
+                        "AI-instruction": "Extract the fund's ownership percentage in the company (fully-diluted basis preferred).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "last_financing_date",
+                        "data_type": "date",
+                        "description": "Date of most recent financing round",
+                        "AI-instruction": "Extract the date of the company's most recent funding round. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "last_financing_round",
+                        "data_type": "text",
+                        "description": "Name of most recent financing round",
+                        "AI-instruction": "Extract the name/stage of the most recent round (e.g., 'Series C', 'Growth Round').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "last_post_money_valuation",
+                        "data_type": "currency",
+                        "description": "Post-money valuation from last round",
+                        "AI-instruction": "Extract the post-money valuation from the most recent financing round.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "valuation_methodology",
+                        "data_type": "text",
+                        "description": "Method used for current valuation",
+                        "AI-instruction": "Extract the valuation method: Recent Transaction, Comparable Companies, DCF, Market Approach, Cost, Other.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Recent Transaction, Comparable Companies, Comparable Transactions, DCF, Market Multiple, Cost Basis, Orderly Liquidation, Other"
+                    },
+                    {
+                        "header": "board_representation",
+                        "data_type": "boolean",
+                        "description": "Whether fund has board representation",
+                        "AI-instruction": "Determine if the fund has a board seat or observer rights (True) or not (False).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "investment_status",
+                        "data_type": "text",
+                        "description": "Current status of the investment",
+                        "AI-instruction": "Classify the status: Active, Under Review, Distressed, Pending Exit, Other.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Active - Performing, Active - Monitoring, Under Review, Distressed, Pending Exit, Written Off"
+                    }
+                ],
+                "Realized Investments": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Reference to reporting quarter",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same quarter.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_quarter"
+                        }
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Reference to reporting year",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_year"
+                        }
+                    },
+                    {
+                        "header": "portfolio_company_name",
+                        "data_type": "text",
+                        "description": "Name of the exited portfolio company",
+                        "AI-instruction": "Extract the name of the portfolio company that was exited (fully or partially).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "initial_investment_date",
+                        "data_type": "date",
+                        "description": "Date of initial investment",
+                        "AI-instruction": "Extract the date when this investment was first made. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "exit_date",
+                        "data_type": "date",
+                        "description": "Date of exit",
+                        "AI-instruction": "Extract the date when the exit transaction closed. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "holding_period_months",
+                        "data_type": "number",
+                        "description": "Holding period in months",
+                        "AI-instruction": "Calculate or extract the number of months between initial investment and exit.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "exit_type",
+                        "data_type": "text",
+                        "description": "Type of exit transaction",
+                        "AI-instruction": "Classify the exit: IPO, M&A/Trade Sale, Secondary Sale, Buyback, Liquidation, Write-off.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "IPO, M&A - Strategic, M&A - Financial, Secondary Sale, Management Buyback, Recapitalization, Liquidation, Write-off"
+                    },
+                    {
+                        "header": "exit_status",
+                        "data_type": "text",
+                        "description": "Full or partial exit",
+                        "AI-instruction": "Indicate if this was a Full Exit (100% liquidated) or Partial Exit (some position retained).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Full Exit, Partial Exit"
+                    },
+                    {
+                        "header": "sector",
+                        "data_type": "text",
+                        "description": "Industry sector of the company",
+                        "AI-instruction": "Extract or classify the company's sector.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "total_cost_basis",
+                        "data_type": "currency",
+                        "description": "Total amount invested",
+                        "AI-instruction": "Extract the total capital invested in this company across all rounds.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "total_proceeds",
+                        "data_type": "currency",
+                        "description": "Total proceeds from exit",
+                        "AI-instruction": "Extract the total cash proceeds received from the exit (gross of fees/expenses).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "realized_gain_loss",
+                        "data_type": "currency",
+                        "description": "Realized gain or loss",
+                        "AI-instruction": "Calculate or extract: Total Proceeds - Total Cost Basis.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "realized_moic",
+                        "data_type": "number",
+                        "description": "Realized multiple on invested capital",
+                        "AI-instruction": "Calculate or extract: Total Proceeds / Total Cost Basis. Express as multiple (e.g., 3.2 for 3.2x).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "realized_irr",
+                        "data_type": "percentage",
+                        "description": "Realized IRR for this investment",
+                        "AI-instruction": "Extract the internal rate of return achieved on this investment. Express as percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "exit_valuation",
+                        "data_type": "currency",
+                        "description": "Exit valuation of the company",
+                        "AI-instruction": "Extract the total enterprise or equity value at which the company was sold/valued at exit.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "acquirer_or_buyer",
+                        "data_type": "text",
+                        "description": "Name of acquirer or buyer",
+                        "AI-instruction": "Extract the name of the acquiring company or buyer in the transaction.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "New Investments": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Reference to reporting quarter",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same quarter.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_quarter"
+                        }
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Reference to reporting year",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_year"
+                        }
+                    },
+                    {
+                        "header": "portfolio_company_name",
+                        "data_type": "text",
+                        "description": "Name of the new portfolio company",
+                        "AI-instruction": "Extract the name of the company that received initial investment this quarter.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "investment_date",
+                        "data_type": "date",
+                        "description": "Date of investment",
+                        "AI-instruction": "Extract the closing date of this new investment. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "investment_amount",
+                        "data_type": "currency",
+                        "description": "Amount invested",
+                        "AI-instruction": "Extract the total amount invested by the fund in this transaction.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "investment_stage",
+                        "data_type": "text",
+                        "description": "Stage of investment",
+                        "AI-instruction": "Classify the stage: Seed, Series A, Series B, Series C+, Growth, etc.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Seed, Pre-Series A, Series A, Series B, Series C, Series D+, Growth, Late Stage, Buyout"
+                    },
+                    {
+                        "header": "financing_round_name",
+                        "data_type": "text",
+                        "description": "Name of the financing round",
+                        "AI-instruction": "Extract the specific round name (e.g., 'Series B', 'Growth Round 1').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "total_round_size",
+                        "data_type": "currency",
+                        "description": "Total size of the financing round",
+                        "AI-instruction": "Extract the total amount raised by the company in this round (all investors).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "post_money_valuation",
+                        "data_type": "currency",
+                        "description": "Post-money valuation",
+                        "AI-instruction": "Extract the post-money valuation of the company after this round.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "pre_money_valuation",
+                        "data_type": "currency",
+                        "description": "Pre-money valuation",
+                        "AI-instruction": "Extract the pre-money valuation before this investment round.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "ownership_acquired",
+                        "data_type": "percentage",
+                        "description": "Ownership percentage acquired",
+                        "AI-instruction": "Calculate or extract the ownership percentage acquired by the fund in this transaction.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "sector",
+                        "data_type": "text",
+                        "description": "Industry sector",
+                        "AI-instruction": "Extract or classify the company's sector.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "geography",
+                        "data_type": "text",
+                        "description": "Company location",
+                        "AI-instruction": "Extract the country or region where the company is based.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "security_type",
+                        "data_type": "text",
+                        "description": "Type of security purchased",
+                        "AI-instruction": "Identify the security type acquired.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Preferred Stock, Common Stock, Convertible Preferred, Convertible Note, SAFE, Warrants, Other"
+                    },
+                    {
+                        "header": "lead_investor",
+                        "data_type": "text",
+                        "description": "Lead investor in the round",
+                        "AI-instruction": "Extract the name of the lead investor if this fund was not the lead.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "is_lead_investor",
+                        "data_type": "boolean",
+                        "description": "Whether fund led the round",
+                        "AI-instruction": "Determine if this fund was the lead investor (True) or not (False).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "co_investors",
+                        "data_type": "text",
+                        "description": "Other investors in the round",
+                        "AI-instruction": "Extract names of other notable co-investors in this round (comma-separated if multiple).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Follow-on Investments": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Reference to reporting quarter",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same quarter.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_quarter"
+                        }
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Reference to reporting year",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_year"
+                        }
+                    },
+                    {
+                        "header": "portfolio_company_name",
+                        "data_type": "text",
+                        "description": "Name of the existing portfolio company",
+                        "AI-instruction": "Extract the name of the portfolio company receiving the follow-on investment.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "investment_date",
+                        "data_type": "date",
+                        "description": "Date of this follow-on investment",
+                        "AI-instruction": "Extract the closing date of this follow-on investment. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "follow_on_amount",
+                        "data_type": "currency",
+                        "description": "Amount of follow-on investment",
+                        "AI-instruction": "Extract the amount invested in this follow-on round.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "financing_round_name",
+                        "data_type": "text",
+                        "description": "Name of the financing round",
+                        "AI-instruction": "Extract the round name (e.g., 'Series C', 'Bridge Round').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "total_round_size",
+                        "data_type": "currency",
+                        "description": "Total size of the round",
+                        "AI-instruction": "Extract the total amount raised in this financing round.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "post_money_valuation",
+                        "data_type": "currency",
+                        "description": "Post-money valuation",
+                        "AI-instruction": "Extract the post-money valuation for this round.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "prorata_exercised",
+                        "data_type": "boolean",
+                        "description": "Whether pro-rata rights were exercised",
+                        "AI-instruction": "Determine if the fund exercised its pro-rata rights (True) or invested above/below (False).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "cumulative_investment",
+                        "data_type": "currency",
+                        "description": "Total investment to date including this round",
+                        "AI-instruction": "Calculate or extract the cumulative amount invested after this follow-on.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Write-offs and Write-downs": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Reference to reporting quarter",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same quarter.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_quarter"
+                        }
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Reference to reporting year",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_year"
+                        }
+                    },
+                    {
+                        "header": "portfolio_company_name",
+                        "data_type": "text",
+                        "description": "Name of the company",
+                        "AI-instruction": "Extract the name of the portfolio company being written down or off.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "action_type",
+                        "data_type": "text",
+                        "description": "Type of action taken",
+                        "AI-instruction": "Classify as: Full Write-off (to zero), Partial Write-down, or Impairment.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Full Write-off, Partial Write-down, Impairment"
+                    },
+                    {
+                        "header": "previous_carrying_value",
+                        "data_type": "currency",
+                        "description": "Carrying value before write-down",
+                        "AI-instruction": "Extract the fair value of the investment before this write-down.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "new_carrying_value",
+                        "data_type": "currency",
+                        "description": "New carrying value after write-down",
+                        "AI-instruction": "Extract the new fair value after the write-down (will be zero for write-offs).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "write_down_amount",
+                        "data_type": "currency",
+                        "description": "Amount of the write-down",
+                        "AI-instruction": "Calculate or extract: Previous Value - New Value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "total_cost_basis",
+                        "data_type": "currency",
+                        "description": "Original total investment",
+                        "AI-instruction": "Extract the original cost basis of this investment.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "reason",
+                        "data_type": "text",
+                        "description": "Reason for write-down",
+                        "AI-instruction": "Extract or summarize the reason: Company Failure, Liquidation, Market Conditions, etc.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Fair Value Adjustments": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Reference to reporting quarter",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same quarter.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_quarter"
+                        }
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Reference to reporting year",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_year"
+                        }
+                    },
+                    {
+                        "header": "portfolio_company_name",
+                        "data_type": "text",
+                        "description": "Name of the company",
+                        "AI-instruction": "Extract the name of the company whose valuation was adjusted.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "previous_fair_value",
+                        "data_type": "currency",
+                        "description": "Fair value at previous quarter end",
+                        "AI-instruction": "Extract the fair value from the previous valuation.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "current_fair_value",
+                        "data_type": "currency",
+                        "description": "Fair value at current quarter end",
+                        "AI-instruction": "Extract the new fair value after adjustment.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "adjustment_amount",
+                        "data_type": "currency",
+                        "description": "Amount of fair value change",
+                        "AI-instruction": "Calculate or extract: Current FV - Previous FV. Positive = markup, negative = markdown.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "adjustment_percentage",
+                        "data_type": "percentage",
+                        "description": "Percentage change in fair value",
+                        "AI-instruction": "Calculate: ((Current FV - Previous FV) / Previous FV) × 100.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "adjustment_reason",
+                        "data_type": "text",
+                        "description": "Primary driver of the valuation change",
+                        "AI-instruction": "Extract or classify the reason: New Financing Round, Performance Improvement, Market Conditions, etc.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "LP Distribution Schedule": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Reference to reporting quarter",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same quarter.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_quarter"
+                        }
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Reference to reporting year",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_year"
+                        }
+                    },
+                    {
+                        "header": "distribution_date",
+                        "data_type": "date",
+                        "description": "Date of the distribution",
+                        "AI-instruction": "Extract the date when this distribution was made to LPs. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "distribution_amount",
+                        "data_type": "currency",
+                        "description": "Total amount distributed",
+                        "AI-instruction": "Extract the total amount distributed to all LPs.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "distribution_type",
+                        "data_type": "text",
+                        "description": "Type of distribution",
+                        "AI-instruction": "Classify: Return of Capital, Gain Distribution, Income Distribution, or Mixed.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Return of Capital, Realized Gain, Income Distribution, Mixed, Recallable"
+                    },
+                    {
+                        "header": "source_company",
+                        "data_type": "text",
+                        "description": "Portfolio company that generated proceeds",
+                        "AI-instruction": "Extract the name of the portfolio company whose exit generated these proceeds.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "is_recallable",
+                        "data_type": "boolean",
+                        "description": "Whether distribution is subject to recall",
+                        "AI-instruction": "Determine if this distribution can be recalled (True) or is final (False).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Capital Call Schedule": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Reference to reporting quarter",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same quarter.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_quarter"
+                        }
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Reference to reporting year",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_year"
+                        }
+                    },
+                    {
+                        "header": "call_date",
+                        "data_type": "date",
+                        "description": "Date of the capital call",
+                        "AI-instruction": "Extract the date when this capital call was made. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "call_amount",
+                        "data_type": "currency",
+                        "description": "Total amount called from LPs",
+                        "AI-instruction": "Extract the total capital called from all LPs.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "call_purpose",
+                        "data_type": "text",
+                        "description": "Purpose of the capital call",
+                        "AI-instruction": "Classify: Investment (new deal), Follow-on Investment, Management Fees, Fund Expenses, or Other.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "New Investment, Follow-on Investment, Management Fees, Fund Expenses, Bridge Financing, Reserve, Other"
+                    },
+                    {
+                        "header": "due_date",
+                        "data_type": "date",
+                        "description": "Due date for LP payment",
+                        "AI-instruction": "Extract the date by which LPs must fund the call. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "investment_target",
+                        "data_type": "text",
+                        "description": "Company or purpose receiving capital",
+                        "AI-instruction": "If for an investment, extract the portfolio company name. Otherwise describe the purpose.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Limited Partners": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "lp_name",
+                        "data_type": "text",
+                        "description": "Name of the Limited Partner",
+                        "AI-instruction": "Extract the full legal name of the Limited Partner investor.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "lp_type",
+                        "data_type": "text",
+                        "description": "Type of investor",
+                        "AI-instruction": "Classify: Pension Fund, Endowment, Family Office, Fund of Funds, Corporate, Insurance, Sovereign Wealth, Individual, Other.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Pension Fund, Endowment, Foundation, Family Office, Fund of Funds, Corporate, Insurance Company, Sovereign Wealth Fund, High Net Worth Individual, Other"
+                    },
+                    {
+                        "header": "commitment_amount",
+                        "data_type": "currency",
+                        "description": "Total commitment to the fund",
+                        "AI-instruction": "Extract the total capital committed by this LP.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "commitment_percentage",
+                        "data_type": "percentage",
+                        "description": "Percentage of total fund commitments",
+                        "AI-instruction": "Calculate or extract: (LP Commitment / Total Fund Commitments) × 100.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "capital_called_cumulative",
+                        "data_type": "currency",
+                        "description": "Total capital called from this LP",
+                        "AI-instruction": "Extract the cumulative amount called from this LP since inception.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "distributions_cumulative",
+                        "data_type": "currency",
+                        "description": "Total distributions to this LP",
+                        "AI-instruction": "Extract the cumulative distributions paid to this LP.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "lp_geography",
+                        "data_type": "text",
+                        "description": "Geographic location of LP",
+                        "AI-instruction": "Extract the country or region where the LP is based.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "commitment_date",
+                        "data_type": "date",
+                        "description": "Date of commitment",
+                        "AI-instruction": "Extract the date when this LP committed capital. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Fund Expenses": [
+                    {
+                        "header": "fund_name_legal",
+                        "data_type": "text",
+                        "description": "Reference to the fund legal name",
+                        "AI-instruction": "This field links back to Fund Overview. Use the same fund legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Overview",
+                            "source_field": "fund_name_legal"
+                        }
+                    },
+                    {
+                        "header": "reporting_quarter",
+                        "data_type": "text",
+                        "description": "Reference to reporting quarter",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same quarter.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_quarter"
+                        }
+                    },
+                    {
+                        "header": "reporting_year",
+                        "data_type": "number",
+                        "description": "Reference to reporting year",
+                        "AI-instruction": "This field links back to Reporting Period Details. Use the same year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Reporting Period Details",
+                            "source_field": "reporting_year"
+                        }
+                    },
+                    {
+                        "header": "expense_category",
+                        "data_type": "text",
+                        "description": "Category of expense",
+                        "AI-instruction": "Classify: Management Fees, Legal, Audit, Admin Fees, Due Diligence, Consulting, Travel, Other.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Management Fees, Legal Fees, Audit Fees, Administration Fees, Valuation Fees, Due Diligence Costs, Consulting Fees, Travel & Entertainment, Portfolio Company Fees, Other"
+                    },
+                    {
+                        "header": "expense_description",
+                        "data_type": "text",
+                        "description": "Detailed description of expense",
+                        "AI-instruction": "Extract a more detailed description of what this expense was for.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "expense_amount_qtd",
+                        "data_type": "currency",
+                        "description": "Expense amount for this quarter",
+                        "AI-instruction": "Extract the expense amount incurred during this quarter.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "is_reimbursable",
+                        "data_type": "boolean",
+                        "description": "Whether expense is reimbursable to GP",
+                        "AI-instruction": "Determine if this expense was reimbursed to the GP (True) or borne by the fund directly (False).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ]
+            }
+        },
+        "master_fields": {
+            "Fund Overview": ["fund_name_legal", "fund_identifier"],
+            "Reporting Period Details": ["fund_name_legal", "reporting_quarter", "reporting_year"]
+        },
+        "master_instruction_config": {
+            "enabled": true,
+            "text": "This is a venture capital or private equity fund quarterly report to Limited Partners. Focus on:\n\n1. Capital Activity: Pay close attention to the distinction between committed capital, called capital, invested capital, and distributed capital. These are different metrics.\n\n2. Performance Metrics: IRR and MOIC are the primary performance indicators. Be precise about whether values are gross (before fees) or net (after fees).\n\n3. Portfolio Valuations: Fair values may change quarterly. Watch for markups, markdowns, and write-offs.\n\n4. Investment Stages: Correctly identify whether investments are initial, follow-on, or bridge financing.\n\n5. Time Periods: Clearly distinguish between QTD (quarter-to-date), YTD (year-to-date), and cumulative (since inception) metrics.\n\n6. Currency: Maintain currency notation. Some funds report in multiple currencies.\n\n7. Dates: Format all dates as DD-MM-YYYY.\n\n8. Confidentiality: Some company names may be redacted or coded. Extract as shown.\n\n9. Multiple Records: Investment tables will have many rows - one per portfolio company. Extract each company as a separate record.\n\n10. Relationships: Use foreign keys to link portfolio companies back to the fund and reporting period. Each investment record should reference the fund name and reporting period."
+        }
+    }
+}

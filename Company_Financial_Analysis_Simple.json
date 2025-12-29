@@ -1,0 +1,302 @@
+{
+    "Company Financial Report - Simple": {
+        "color": "#A23B72",
+        "sub_datasets": [
+            {
+                "name": "Company Info",
+                "multiple": false,
+                "prime_fields": ["company_name"]
+            },
+            {
+                "name": "Financial Period",
+                "multiple": false,
+                "prime_fields": ["company_name", "fiscal_year"]
+            },
+            {
+                "name": "Income Statement",
+                "multiple": true,
+                "prime_fields": ["company_name", "fiscal_year", "line_item_name"]
+            },
+            {
+                "name": "Balance Sheet",
+                "multiple": true,
+                "prime_fields": ["company_name", "fiscal_year", "line_item_name"]
+            },
+            {
+                "name": "Key Ratios",
+                "multiple": false,
+                "prime_fields": ["company_name", "fiscal_year"]
+            }
+        ],
+        "instruction_sets": {
+            "Default": {
+                "Company Info": [
+                    {
+                        "header": "company_name",
+                        "data_type": "text",
+                        "description": "Company legal name",
+                        "AI-instruction": "Extract the full legal name of the company from the report header.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "registration_number",
+                        "data_type": "text",
+                        "description": "Company registration number",
+                        "AI-instruction": "Extract the official company registration number.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "industry",
+                        "data_type": "text",
+                        "description": "Primary industry",
+                        "AI-instruction": "Extract or classify the company's primary industry sector.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "country",
+                        "data_type": "text",
+                        "description": "Country of incorporation",
+                        "AI-instruction": "Extract the country where the company is incorporated.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "auditor",
+                        "data_type": "text",
+                        "description": "External auditor",
+                        "AI-instruction": "Extract the name of the audit firm.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Deloitte, PricewaterhouseCoopers, Ernst & Young, KPMG, BDO, Other"
+                    }
+                ],
+                "Financial Period": [
+                    {
+                        "header": "company_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "Link back to Company Info.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Info",
+                            "source_field": "company_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Fiscal year (e.g., 2024)",
+                        "AI-instruction": "Extract the fiscal year as a 4-digit number.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "period_end_date",
+                        "data_type": "date",
+                        "description": "Period end date",
+                        "AI-instruction": "Extract the end date of this fiscal period. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "currency",
+                        "data_type": "text",
+                        "description": "Reporting currency",
+                        "AI-instruction": "Extract the currency used in financial statements (EUR, USD, GBP, etc.).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "EUR, USD, GBP, CHF, JPY, CNY"
+                    },
+                    {
+                        "header": "accounting_standard",
+                        "data_type": "text",
+                        "description": "Accounting framework",
+                        "AI-instruction": "Extract the accounting standard used (IFRS, US GAAP, etc.).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "IFRS, US GAAP, UK GAAP, Local GAAP"
+                    }
+                ],
+                "Income Statement": [
+                    {
+                        "header": "company_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "Link back to Company Info.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Info",
+                            "source_field": "company_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Reference to fiscal year",
+                        "AI-instruction": "Link back to Financial Period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_year"
+                        }
+                    },
+                    {
+                        "header": "line_item_name",
+                        "data_type": "text",
+                        "description": "Name of the line item",
+                        "AI-instruction": "Extract the line item name from the income statement (e.g., 'Revenue', 'Operating Expenses', 'Net Income').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "current_year",
+                        "data_type": "currency",
+                        "description": "Current year amount",
+                        "AI-instruction": "Extract the amount for the current fiscal year.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "prior_year",
+                        "data_type": "currency",
+                        "description": "Prior year amount",
+                        "AI-instruction": "Extract the comparative amount from the previous year.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Balance Sheet": [
+                    {
+                        "header": "company_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "Link back to Company Info.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Info",
+                            "source_field": "company_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Reference to fiscal year",
+                        "AI-instruction": "Link back to Financial Period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_year"
+                        }
+                    },
+                    {
+                        "header": "line_item_name",
+                        "data_type": "text",
+                        "description": "Name of the line item",
+                        "AI-instruction": "Extract the line item name from the balance sheet (e.g., 'Total Assets', 'Current Liabilities', 'Equity').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "current_year",
+                        "data_type": "currency",
+                        "description": "Current year amount",
+                        "AI-instruction": "Extract the amount as of current year end.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "prior_year",
+                        "data_type": "currency",
+                        "description": "Prior year amount",
+                        "AI-instruction": "Extract the comparative amount from prior year end.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Key Ratios": [
+                    {
+                        "header": "company_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "Link back to Company Info.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Info",
+                            "source_field": "company_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Reference to fiscal year",
+                        "AI-instruction": "Link back to Financial Period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_year"
+                        }
+                    },
+                    {
+                        "header": "gross_margin",
+                        "data_type": "percentage",
+                        "description": "Gross profit margin",
+                        "AI-instruction": "Calculate or extract: (Gross Profit / Revenue) × 100.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "operating_margin",
+                        "data_type": "percentage",
+                        "description": "Operating profit margin",
+                        "AI-instruction": "Calculate or extract: (Operating Income / Revenue) × 100.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "net_margin",
+                        "data_type": "percentage",
+                        "description": "Net profit margin",
+                        "AI-instruction": "Calculate or extract: (Net Income / Revenue) × 100.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "current_ratio",
+                        "data_type": "number",
+                        "description": "Current ratio",
+                        "AI-instruction": "Calculate or extract: Current Assets / Current Liabilities.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "debt_to_equity",
+                        "data_type": "number",
+                        "description": "Debt to equity ratio",
+                        "AI-instruction": "Calculate or extract: Total Debt / Total Equity.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_on_equity",
+                        "data_type": "percentage",
+                        "description": "Return on equity (ROE)",
+                        "AI-instruction": "Calculate or extract: (Net Income / Equity) × 100.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ]
+            }
+        },
+        "master_fields": {
+            "Company Info": ["company_name"],
+            "Financial Period": ["company_name", "fiscal_year"]
+        },
+        "master_instruction_config": {
+            "enabled": true,
+            "text": "This is a simplified company financial report. Extract basic company information, financial statements, and key ratios. Pay attention to currency units (thousands, millions). Dates should be formatted as DD-MM-YYYY. Watch for parentheses indicating negative numbers."
+        }
+    }
+}

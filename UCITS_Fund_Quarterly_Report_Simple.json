@@ -1,0 +1,203 @@
+{
+    "UCITS Fund Report - Simple": {
+        "color": "#2E86AB",
+        "sub_datasets": [
+            {
+                "name": "Fund Details",
+                "multiple": false,
+                "prime_fields": ["fund_name"]
+            },
+            {
+                "name": "Performance",
+                "multiple": false,
+                "prime_fields": ["fund_name", "quarter"]
+            },
+            {
+                "name": "Top Holdings",
+                "multiple": true,
+                "prime_fields": ["fund_name", "quarter", "security_name"]
+            }
+        ],
+        "instruction_sets": {
+            "Default": {
+                "Fund Details": [
+                    {
+                        "header": "fund_name",
+                        "data_type": "text",
+                        "description": "Name of the fund",
+                        "AI-instruction": "Extract the fund name from the header or title of the report.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "isin_code",
+                        "data_type": "text",
+                        "description": "ISIN identifier",
+                        "AI-instruction": "Extract the 12-character ISIN code (e.g., LU1234567890).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "currency",
+                        "data_type": "text",
+                        "description": "Base currency",
+                        "AI-instruction": "Extract the fund's base currency (EUR, USD, GBP, etc.).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "EUR, USD, GBP, CHF, JPY"
+                    },
+                    {
+                        "header": "management_company",
+                        "data_type": "text",
+                        "description": "Management company name",
+                        "AI-instruction": "Extract the name of the asset management company.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "total_assets",
+                        "data_type": "currency",
+                        "description": "Total fund assets",
+                        "AI-instruction": "Extract the total assets under management.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Performance": [
+                    {
+                        "header": "fund_name",
+                        "data_type": "text",
+                        "description": "Reference to fund name",
+                        "AI-instruction": "Link back to Fund Details.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Details",
+                            "source_field": "fund_name"
+                        }
+                    },
+                    {
+                        "header": "quarter",
+                        "data_type": "text",
+                        "description": "Reporting quarter (e.g., Q3 2024)",
+                        "AI-instruction": "Extract the quarter being reported in format 'Q1 2024', 'Q2 2024', etc.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "nav_per_share",
+                        "data_type": "currency",
+                        "description": "Net Asset Value per share",
+                        "AI-instruction": "Extract the NAV per share at quarter end.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_qtd",
+                        "data_type": "percentage",
+                        "description": "Quarterly return",
+                        "AI-instruction": "Extract the fund return for this quarter as a percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_ytd",
+                        "data_type": "percentage",
+                        "description": "Year-to-date return",
+                        "AI-instruction": "Extract the year-to-date return as a percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_1y",
+                        "data_type": "percentage",
+                        "description": "1-year return",
+                        "AI-instruction": "Extract the 1-year return as a percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "benchmark_return_qtd",
+                        "data_type": "percentage",
+                        "description": "Benchmark quarterly return",
+                        "AI-instruction": "Extract the benchmark return for this quarter.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Top Holdings": [
+                    {
+                        "header": "fund_name",
+                        "data_type": "text",
+                        "description": "Reference to fund name",
+                        "AI-instruction": "Link back to Fund Details.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Details",
+                            "source_field": "fund_name"
+                        }
+                    },
+                    {
+                        "header": "quarter",
+                        "data_type": "text",
+                        "description": "Reference to quarter",
+                        "AI-instruction": "Link back to Performance.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Performance",
+                            "source_field": "quarter"
+                        }
+                    },
+                    {
+                        "header": "security_name",
+                        "data_type": "text",
+                        "description": "Name of the holding",
+                        "AI-instruction": "Extract the name of each top holding from the portfolio holdings table.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "sector",
+                        "data_type": "text",
+                        "description": "Industry sector",
+                        "AI-instruction": "Extract the sector (e.g., Technology, Healthcare, Financials).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Technology, Healthcare, Financials, Consumer, Industrials, Energy, Materials, Utilities, Real Estate, Communication Services"
+                    },
+                    {
+                        "header": "country",
+                        "data_type": "text",
+                        "description": "Country of domicile",
+                        "AI-instruction": "Extract the country where the security is domiciled.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "percentage_of_nav",
+                        "data_type": "percentage",
+                        "description": "Weight in portfolio",
+                        "AI-instruction": "Extract the weight as a percentage of NAV (e.g., 3.2 for 3.2%).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "market_value",
+                        "data_type": "currency",
+                        "description": "Market value of holding",
+                        "AI-instruction": "Extract the market value of this position.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ]
+            }
+        },
+        "master_fields": {
+            "Fund Details": ["fund_name"],
+            "Performance": ["fund_name", "quarter"]
+        },
+        "master_instruction_config": {
+            "enabled": true,
+            "text": "This is a simplified UCITS fund quarterly report. Extract fund identification, performance metrics, and top holdings. Dates should be formatted as DD-MM-YYYY when applicable. Percentages should be numeric values (e.g., 3.5 for 3.5%)."
+        }
+    }
+}

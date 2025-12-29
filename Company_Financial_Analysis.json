@@ -1,0 +1,1262 @@
+{
+    "Company Financial Analysis": {
+        "color": "#A23B72",
+        "sub_datasets": [
+            {
+                "name": "Company Profile",
+                "multiple": false,
+                "prime_fields": ["company_legal_name", "registration_number"]
+            },
+            {
+                "name": "Financial Period",
+                "multiple": false,
+                "prime_fields": ["company_legal_name", "fiscal_year", "fiscal_period"]
+            },
+            {
+                "name": "Income Statement",
+                "multiple": true,
+                "prime_fields": ["company_legal_name", "fiscal_year", "fiscal_period", "line_item_category"]
+            },
+            {
+                "name": "Balance Sheet",
+                "multiple": true,
+                "prime_fields": ["company_legal_name", "fiscal_year", "fiscal_period", "line_item_category"]
+            },
+            {
+                "name": "Cash Flow Statement",
+                "multiple": true,
+                "prime_fields": ["company_legal_name", "fiscal_year", "fiscal_period", "line_item_category"]
+            },
+            {
+                "name": "Financial Ratios",
+                "multiple": false,
+                "prime_fields": ["company_legal_name", "fiscal_year", "fiscal_period"]
+            },
+            {
+                "name": "Segment Performance",
+                "multiple": true,
+                "prime_fields": ["company_legal_name", "fiscal_year", "fiscal_period", "segment_name"]
+            },
+            {
+                "name": "Geographic Breakdown",
+                "multiple": true,
+                "prime_fields": ["company_legal_name", "fiscal_year", "fiscal_period", "geographic_region"]
+            },
+            {
+                "name": "Key Executives",
+                "multiple": true,
+                "prime_fields": ["company_legal_name", "executive_name", "position_title"]
+            },
+            {
+                "name": "Subsidiaries",
+                "multiple": true,
+                "prime_fields": ["company_legal_name", "subsidiary_name"]
+            },
+            {
+                "name": "Debt Schedule",
+                "multiple": true,
+                "prime_fields": ["company_legal_name", "fiscal_year", "instrument_identifier"]
+            },
+            {
+                "name": "Share Capital",
+                "multiple": true,
+                "prime_fields": ["company_legal_name", "fiscal_year", "share_class"]
+            }
+        ],
+        "instruction_sets": {
+            "Default": {
+                "Company Profile": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Full legal name of the company",
+                        "AI-instruction": "Extract the complete legal entity name of the company, including any Ltd, Inc, PLC, GmbH, SA designations. Usually on the cover page or header.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "trading_name",
+                        "data_type": "text",
+                        "description": "Trading or brand name if different from legal name",
+                        "AI-instruction": "Extract the trading or commercial name if it differs from the legal name (e.g., 'Alphabet' vs 'Alphabet Inc.').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "registration_number",
+                        "data_type": "text",
+                        "description": "Company registration or incorporation number",
+                        "AI-instruction": "Extract the official company registration number assigned by the registration authority. Format varies by jurisdiction.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "tax_identification_number",
+                        "data_type": "text",
+                        "description": "Tax ID or VAT number",
+                        "AI-instruction": "Extract the tax identification number, VAT number, or EIN. Look in company details or footer sections.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "lei_code",
+                        "data_type": "text",
+                        "description": "Legal Entity Identifier",
+                        "AI-instruction": "Extract the 20-character LEI code if provided. This is an international identifier for legal entities.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "stock_ticker",
+                        "data_type": "text",
+                        "description": "Stock exchange ticker symbol",
+                        "AI-instruction": "Extract the stock ticker symbol(s). Include exchange identifier if provided (e.g., 'AAPL' or 'NASDAQ:AAPL').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "primary_exchange",
+                        "data_type": "text",
+                        "description": "Primary stock exchange listing",
+                        "AI-instruction": "Extract the name of the primary stock exchange (e.g., NYSE, NASDAQ, LSE, Euronext, Frankfurt).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "NYSE, NASDAQ, LSE, Euronext Paris, Euronext Amsterdam, Frankfurt, SIX Swiss, Tokyo, Hong Kong, Shanghai, Private/Unlisted"
+                    },
+                    {
+                        "header": "incorporation_date",
+                        "data_type": "date",
+                        "description": "Date of incorporation",
+                        "AI-instruction": "Extract the date when the company was incorporated. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "jurisdiction",
+                        "data_type": "text",
+                        "description": "Jurisdiction of incorporation",
+                        "AI-instruction": "Extract the country or state where the company is incorporated (e.g., Delaware USA, England & Wales, Netherlands).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "industry_sector",
+                        "data_type": "text",
+                        "description": "Primary industry sector",
+                        "AI-instruction": "Extract the primary industry sector classification. Use standard classifications like GICS, ICB, or NAICS.",
+                        "extraction_method": "list",
+                        "lookup_enabled": true,
+                        "allowed_values": "",
+                        "lookup_file": "/Users/username/Documents/EagleEye/Lookups/industry_sectors.xlsx",
+                        "lookup_column": "Sector_Name",
+                        "key_column": "Sector_Code"
+                    },
+                    {
+                        "header": "business_description",
+                        "data_type": "text",
+                        "description": "Brief description of business activities",
+                        "AI-instruction": "Extract a concise description of the company's main business activities. Usually 1-3 sentences from company overview.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "headquarters_address",
+                        "data_type": "text",
+                        "description": "Full address of headquarters",
+                        "AI-instruction": "Extract the complete headquarters address including street, city, postal code, and country.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "headquarters_country",
+                        "data_type": "text",
+                        "description": "Country where headquarters is located",
+                        "AI-instruction": "Extract just the country name from the headquarters address.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "number_of_employees",
+                        "data_type": "number",
+                        "description": "Total number of employees",
+                        "AI-instruction": "Extract the total employee headcount. May be stated as a range or specific number. Use the midpoint if a range.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "website",
+                        "data_type": "text",
+                        "description": "Company website URL",
+                        "AI-instruction": "Extract the company's official website URL. Include https:// if shown.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "auditor_name",
+                        "data_type": "text",
+                        "description": "Name of the external auditor",
+                        "AI-instruction": "Extract the name of the audit firm (e.g., Deloitte, PwC, EY, KPMG, BDO). Look in auditor's report section.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Deloitte, PricewaterhouseCoopers, Ernst & Young, KPMG, BDO, Grant Thornton, RSM, Mazars, Crowe, Baker Tilly, Other"
+                    },
+                    {
+                        "header": "audit_opinion",
+                        "data_type": "text",
+                        "description": "Auditor's opinion type",
+                        "AI-instruction": "Extract the audit opinion: Unqualified/Clean, Qualified, Adverse, or Disclaimer. Look in the auditor's report.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Unqualified, Qualified, Adverse, Disclaimer of Opinion"
+                    }
+                ],
+                "Financial Period": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "This field links back to Company Profile. Use the same company legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Profile",
+                            "source_field": "company_legal_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Fiscal year being reported",
+                        "AI-instruction": "Extract the fiscal year as a 4-digit number (e.g., 2024). This is the year the fiscal period ends.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fiscal_period",
+                        "data_type": "text",
+                        "description": "Fiscal period type",
+                        "AI-instruction": "Extract the period type: Annual, Q1, Q2, Q3, Q4, H1 (half-year), or YTD.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Annual, Q1, Q2, Q3, Q4, H1, H2, YTD"
+                    },
+                    {
+                        "header": "period_start_date",
+                        "data_type": "date",
+                        "description": "First day of the fiscal period",
+                        "AI-instruction": "Extract the start date of this fiscal period. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "period_end_date",
+                        "data_type": "date",
+                        "description": "Last day of the fiscal period",
+                        "AI-instruction": "Extract the end date of this fiscal period. Format as DD-MM-YYYY. This is the 'as of' date for the report.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "reporting_currency",
+                        "data_type": "text",
+                        "description": "Currency used in financial statements",
+                        "AI-instruction": "Extract the reporting currency (EUR, USD, GBP, etc.). Usually stated near financial statements.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "EUR, USD, GBP, CHF, JPY, CNY, AUD, CAD, SEK, NOK, DKK"
+                    },
+                    {
+                        "header": "currency_unit",
+                        "data_type": "text",
+                        "description": "Unit of currency presentation",
+                        "AI-instruction": "Extract how amounts are presented: Ones, Thousands, Millions, Billions. Look for statements like 'in thousands'.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Ones, Thousands, Millions, Billions"
+                    },
+                    {
+                        "header": "accounting_standard",
+                        "data_type": "text",
+                        "description": "Accounting framework used",
+                        "AI-instruction": "Extract the accounting standard: IFRS, US GAAP, UK GAAP, Local GAAP, etc. Usually stated in notes to accounts.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "IFRS, US GAAP, UK GAAP, German HGB, French GAAP, Dutch GAAP, Other"
+                    },
+                    {
+                        "header": "report_type",
+                        "data_type": "text",
+                        "description": "Type of financial report",
+                        "AI-instruction": "Identify the report type: Audited Annual Report, Unaudited Quarterly, Interim Report, Preliminary Results, etc.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Audited Annual Report, Unaudited Quarterly Report, Interim Report, Preliminary Results, Management Accounts"
+                    },
+                    {
+                        "header": "consolidation_status",
+                        "data_type": "text",
+                        "description": "Whether statements are consolidated",
+                        "AI-instruction": "Determine if these are Consolidated (group) or Standalone (parent only) financial statements.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Consolidated, Standalone, Combined"
+                    },
+                    {
+                        "header": "publication_date",
+                        "data_type": "date",
+                        "description": "Date the report was published",
+                        "AI-instruction": "Extract the date this report was published or filed. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Income Statement": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "This field links back to Company Profile. Use the same company legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Profile",
+                            "source_field": "company_legal_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Reference to fiscal year",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_year"
+                        }
+                    },
+                    {
+                        "header": "fiscal_period",
+                        "data_type": "text",
+                        "description": "Reference to fiscal period",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_period"
+                        }
+                    },
+                    {
+                        "header": "line_item_category",
+                        "data_type": "text",
+                        "description": "Category of the income statement line item",
+                        "AI-instruction": "Classify the line item into major categories: Revenue, Cost of Revenue, Operating Expenses, Operating Income, Non-Operating, Tax, Net Income, etc.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Revenue, Cost of Revenue, Gross Profit, Operating Expenses, Operating Income, Non-Operating Income, Non-Operating Expenses, Pretax Income, Tax Expense, Net Income, Other Comprehensive Income"
+                    },
+                    {
+                        "header": "line_item_name",
+                        "data_type": "text",
+                        "description": "Specific name of the line item",
+                        "AI-instruction": "Extract the exact line item name from the income statement (e.g., 'Revenue from sale of goods', 'Research & Development', 'Interest expense').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "current_period_amount",
+                        "data_type": "currency",
+                        "description": "Amount for the current period",
+                        "AI-instruction": "Extract the monetary amount for this line item in the current period. Include negative sign for expenses if shown in parentheses.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "prior_period_amount",
+                        "data_type": "currency",
+                        "description": "Comparative amount for the prior period",
+                        "AI-instruction": "Extract the comparative amount from the previous year/period if shown. Include negative sign for expenses if applicable.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "variance_amount",
+                        "data_type": "currency",
+                        "description": "Absolute change from prior period",
+                        "AI-instruction": "Calculate or extract the difference between current and prior period. Positive = increase, Negative = decrease.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "variance_percentage",
+                        "data_type": "percentage",
+                        "description": "Percentage change from prior period",
+                        "AI-instruction": "Calculate or extract the percentage change from prior period. Express as percentage (e.g., 15.5 for 15.5% growth).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "percentage_of_revenue",
+                        "data_type": "percentage",
+                        "description": "Line item as percentage of total revenue",
+                        "AI-instruction": "Calculate or extract this line item as a percentage of total revenue (margin analysis). Common for margin ratios.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Balance Sheet": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "This field links back to Company Profile. Use the same company legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Profile",
+                            "source_field": "company_legal_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Reference to fiscal year",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_year"
+                        }
+                    },
+                    {
+                        "header": "fiscal_period",
+                        "data_type": "text",
+                        "description": "Reference to fiscal period",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_period"
+                        }
+                    },
+                    {
+                        "header": "line_item_category",
+                        "data_type": "text",
+                        "description": "Major category on the balance sheet",
+                        "AI-instruction": "Classify the line item: Current Assets, Non-Current Assets, Current Liabilities, Non-Current Liabilities, Equity, etc.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Current Assets, Non-Current Assets, Total Assets, Current Liabilities, Non-Current Liabilities, Total Liabilities, Equity, Total Liabilities and Equity"
+                    },
+                    {
+                        "header": "line_item_subcategory",
+                        "data_type": "text",
+                        "description": "Subcategory for detailed classification",
+                        "AI-instruction": "Provide more granular classification (e.g., 'Cash & Equivalents', 'Inventory', 'Property Plant Equipment', 'Long-term Debt', 'Retained Earnings').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "line_item_name",
+                        "data_type": "text",
+                        "description": "Specific name of the balance sheet line item",
+                        "AI-instruction": "Extract the exact line item name from the balance sheet as it appears in the statement.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "current_period_amount",
+                        "data_type": "currency",
+                        "description": "Amount as of current period end",
+                        "AI-instruction": "Extract the monetary amount for this line item as of the current period end date.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "prior_period_amount",
+                        "data_type": "currency",
+                        "description": "Comparative amount from prior period",
+                        "AI-instruction": "Extract the comparative amount as of the prior period end date if shown.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "variance_amount",
+                        "data_type": "currency",
+                        "description": "Change from prior period",
+                        "AI-instruction": "Calculate or extract the absolute change from prior period.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "variance_percentage",
+                        "data_type": "percentage",
+                        "description": "Percentage change from prior period",
+                        "AI-instruction": "Calculate or extract the percentage change from prior period.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "percentage_of_total_assets",
+                        "data_type": "percentage",
+                        "description": "Line item as percentage of total assets",
+                        "AI-instruction": "Calculate or extract this line item as a percentage of total assets for composition analysis.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Cash Flow Statement": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "This field links back to Company Profile. Use the same company legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Profile",
+                            "source_field": "company_legal_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Reference to fiscal year",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_year"
+                        }
+                    },
+                    {
+                        "header": "fiscal_period",
+                        "data_type": "text",
+                        "description": "Reference to fiscal period",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_period"
+                        }
+                    },
+                    {
+                        "header": "line_item_category",
+                        "data_type": "text",
+                        "description": "Cash flow category",
+                        "AI-instruction": "Classify into one of the three main categories: Operating Activities, Investing Activities, or Financing Activities.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Operating Activities, Investing Activities, Financing Activities, Net Change in Cash"
+                    },
+                    {
+                        "header": "line_item_name",
+                        "data_type": "text",
+                        "description": "Specific cash flow line item name",
+                        "AI-instruction": "Extract the exact line item name (e.g., 'Depreciation and amortization', 'Purchase of property and equipment', 'Proceeds from issuance of debt').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "current_period_amount",
+                        "data_type": "currency",
+                        "description": "Cash flow amount for current period",
+                        "AI-instruction": "Extract the cash flow amount. Positive = cash inflow, Negative = cash outflow. Respect the sign conventions used.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "prior_period_amount",
+                        "data_type": "currency",
+                        "description": "Comparative cash flow from prior period",
+                        "AI-instruction": "Extract the comparative cash flow amount from the prior period if shown.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "variance_amount",
+                        "data_type": "currency",
+                        "description": "Change in cash flow from prior period",
+                        "AI-instruction": "Calculate or extract the change in cash flow compared to prior period.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "is_cash_inflow",
+                        "data_type": "boolean",
+                        "description": "Whether this represents a cash inflow",
+                        "AI-instruction": "Determine if this is a cash inflow (True) or outflow (False) based on the amount and context.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Financial Ratios": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "This field links back to Company Profile. Use the same company legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Profile",
+                            "source_field": "company_legal_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Reference to fiscal year",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_year"
+                        }
+                    },
+                    {
+                        "header": "fiscal_period",
+                        "data_type": "text",
+                        "description": "Reference to fiscal period",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_period"
+                        }
+                    },
+                    {
+                        "header": "gross_profit_margin",
+                        "data_type": "percentage",
+                        "description": "Gross profit as percentage of revenue",
+                        "AI-instruction": "Calculate or extract: (Gross Profit / Revenue) × 100. Express as percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "operating_profit_margin",
+                        "data_type": "percentage",
+                        "description": "Operating profit (EBIT) as percentage of revenue",
+                        "AI-instruction": "Calculate or extract: (Operating Income / Revenue) × 100. Also called EBIT margin.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "net_profit_margin",
+                        "data_type": "percentage",
+                        "description": "Net income as percentage of revenue",
+                        "AI-instruction": "Calculate or extract: (Net Income / Revenue) × 100. The bottom-line profitability metric.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_on_assets",
+                        "data_type": "percentage",
+                        "description": "ROA - Net income divided by total assets",
+                        "AI-instruction": "Calculate or extract: (Net Income / Total Assets) × 100. Measures asset efficiency.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_on_equity",
+                        "data_type": "percentage",
+                        "description": "ROE - Net income divided by shareholders' equity",
+                        "AI-instruction": "Calculate or extract: (Net Income / Shareholders' Equity) × 100. Key profitability metric for investors.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "current_ratio",
+                        "data_type": "number",
+                        "description": "Current assets divided by current liabilities",
+                        "AI-instruction": "Calculate or extract: Current Assets / Current Liabilities. Liquidity measure (typically 1-3).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "quick_ratio",
+                        "data_type": "number",
+                        "description": "Acid test ratio - liquid assets divided by current liabilities",
+                        "AI-instruction": "Calculate or extract: (Current Assets - Inventory) / Current Liabilities. Stringent liquidity measure.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "debt_to_equity",
+                        "data_type": "number",
+                        "description": "Total debt divided by shareholders' equity",
+                        "AI-instruction": "Calculate or extract: Total Debt / Shareholders' Equity. Leverage metric (expressed as ratio, e.g., 0.5).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "debt_to_assets",
+                        "data_type": "percentage",
+                        "description": "Total debt as percentage of total assets",
+                        "AI-instruction": "Calculate or extract: (Total Debt / Total Assets) × 100. Alternative leverage measure.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "interest_coverage",
+                        "data_type": "number",
+                        "description": "EBIT divided by interest expense",
+                        "AI-instruction": "Calculate or extract: EBIT / Interest Expense. Measures ability to service debt (times).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "asset_turnover",
+                        "data_type": "number",
+                        "description": "Revenue divided by total assets",
+                        "AI-instruction": "Calculate or extract: Revenue / Total Assets. Measures asset efficiency (times).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "inventory_turnover",
+                        "data_type": "number",
+                        "description": "Cost of goods sold divided by average inventory",
+                        "AI-instruction": "Calculate or extract: COGS / Average Inventory. How many times inventory is sold per year.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "days_sales_outstanding",
+                        "data_type": "number",
+                        "description": "Average collection period for receivables in days",
+                        "AI-instruction": "Calculate or extract: (Accounts Receivable / Revenue) × 365. Average days to collect payment.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "working_capital",
+                        "data_type": "currency",
+                        "description": "Current assets minus current liabilities",
+                        "AI-instruction": "Calculate or extract: Current Assets - Current Liabilities. Available operating liquidity.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "ebitda",
+                        "data_type": "currency",
+                        "description": "Earnings before interest, tax, depreciation and amortization",
+                        "AI-instruction": "Extract or calculate EBITDA. This is a common profitability metric especially for leveraged companies.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "ebitda_margin",
+                        "data_type": "percentage",
+                        "description": "EBITDA as percentage of revenue",
+                        "AI-instruction": "Calculate or extract: (EBITDA / Revenue) × 100. Common margin metric.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "free_cash_flow",
+                        "data_type": "currency",
+                        "description": "Operating cash flow minus capital expenditures",
+                        "AI-instruction": "Calculate or extract: Operating Cash Flow - Capital Expenditures. Cash available after maintaining assets.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Segment Performance": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "This field links back to Company Profile. Use the same company legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Profile",
+                            "source_field": "company_legal_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Reference to fiscal year",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_year"
+                        }
+                    },
+                    {
+                        "header": "fiscal_period",
+                        "data_type": "text",
+                        "description": "Reference to fiscal period",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_period"
+                        }
+                    },
+                    {
+                        "header": "segment_name",
+                        "data_type": "text",
+                        "description": "Name of the business segment or division",
+                        "AI-instruction": "Extract the segment name from segment reporting (e.g., 'Consumer Electronics', 'Cloud Services', 'Pharmaceuticals'). Look in segment reporting notes.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "segment_revenue",
+                        "data_type": "currency",
+                        "description": "Revenue generated by this segment",
+                        "AI-instruction": "Extract the revenue attributable to this business segment.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "segment_operating_income",
+                        "data_type": "currency",
+                        "description": "Operating income for this segment",
+                        "AI-instruction": "Extract the operating profit/EBIT for this segment. May also be called 'Segment Result'.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "segment_operating_margin",
+                        "data_type": "percentage",
+                        "description": "Operating margin for this segment",
+                        "AI-instruction": "Calculate or extract: (Segment Operating Income / Segment Revenue) × 100.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "segment_assets",
+                        "data_type": "currency",
+                        "description": "Total assets allocated to this segment",
+                        "AI-instruction": "Extract the total assets allocated to or used by this segment if disclosed.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "segment_capex",
+                        "data_type": "currency",
+                        "description": "Capital expenditures for this segment",
+                        "AI-instruction": "Extract the capital expenditure (CapEx) for this segment if disclosed separately.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "percentage_of_total_revenue",
+                        "data_type": "percentage",
+                        "description": "Segment revenue as percentage of total company revenue",
+                        "AI-instruction": "Calculate or extract this segment's contribution to total company revenue as a percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "yoy_revenue_growth",
+                        "data_type": "percentage",
+                        "description": "Year-over-year revenue growth for this segment",
+                        "AI-instruction": "Calculate or extract the YoY growth rate for this segment's revenue.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Geographic Breakdown": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "This field links back to Company Profile. Use the same company legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Profile",
+                            "source_field": "company_legal_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Reference to fiscal year",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_year"
+                        }
+                    },
+                    {
+                        "header": "fiscal_period",
+                        "data_type": "text",
+                        "description": "Reference to fiscal period",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_period"
+                        }
+                    },
+                    {
+                        "header": "geographic_region",
+                        "data_type": "text",
+                        "description": "Geographic region or country name",
+                        "AI-instruction": "Extract the geographic region or country from segment reporting (e.g., 'EMEA', 'Americas', 'Asia Pacific', 'United States', 'China').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "region_revenue",
+                        "data_type": "currency",
+                        "description": "Revenue from this geographic region",
+                        "AI-instruction": "Extract the revenue generated in this geographic region.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "region_operating_income",
+                        "data_type": "currency",
+                        "description": "Operating income from this region",
+                        "AI-instruction": "Extract the operating income generated in this region if disclosed separately.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "region_assets",
+                        "data_type": "currency",
+                        "description": "Non-current assets located in this region",
+                        "AI-instruction": "Extract the non-current assets (PP&E, goodwill, etc.) located in this region if disclosed.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "percentage_of_total_revenue",
+                        "data_type": "percentage",
+                        "description": "Region revenue as percentage of total company revenue",
+                        "AI-instruction": "Calculate or extract this region's contribution to total revenue as a percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "yoy_revenue_growth",
+                        "data_type": "percentage",
+                        "description": "Year-over-year revenue growth for this region",
+                        "AI-instruction": "Calculate or extract the YoY growth rate for this region's revenue.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Key Executives": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "This field links back to Company Profile. Use the same company legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Profile",
+                            "source_field": "company_legal_name"
+                        }
+                    },
+                    {
+                        "header": "executive_name",
+                        "data_type": "text",
+                        "description": "Full name of the executive",
+                        "AI-instruction": "Extract the full name of the executive officer or board member. Look in corporate governance or management section.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "position_title",
+                        "data_type": "text",
+                        "description": "Job title or board position",
+                        "AI-instruction": "Extract the official title (e.g., 'Chief Executive Officer', 'Chief Financial Officer', 'Non-Executive Director', 'Chairman').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "position_category",
+                        "data_type": "text",
+                        "description": "Category of the position",
+                        "AI-instruction": "Classify the position: Executive Management, Board of Directors, or Advisory Board.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Executive Management, Board of Directors, Advisory Board, Other"
+                    },
+                    {
+                        "header": "appointment_date",
+                        "data_type": "date",
+                        "description": "Date appointed to current role",
+                        "AI-instruction": "Extract the date this person was appointed to their current position. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "total_compensation",
+                        "data_type": "currency",
+                        "description": "Total compensation for the reporting period",
+                        "AI-instruction": "Extract total compensation including salary, bonus, equity awards, etc. Look in remuneration report.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "is_independent",
+                        "data_type": "boolean",
+                        "description": "Whether the board member is independent",
+                        "AI-instruction": "For board members, determine if they are classified as independent (True) or non-independent (False). Not applicable for executives.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Subsidiaries": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to parent company name",
+                        "AI-instruction": "This field links back to Company Profile. Use the same company legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Profile",
+                            "source_field": "company_legal_name"
+                        }
+                    },
+                    {
+                        "header": "subsidiary_name",
+                        "data_type": "text",
+                        "description": "Legal name of the subsidiary",
+                        "AI-instruction": "Extract the full legal name of the subsidiary company. Look in notes about group structure or list of subsidiaries.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "jurisdiction",
+                        "data_type": "text",
+                        "description": "Country or state of incorporation",
+                        "AI-instruction": "Extract where the subsidiary is incorporated (e.g., 'Delaware, USA', 'Netherlands', 'Singapore').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "ownership_percentage",
+                        "data_type": "percentage",
+                        "description": "Percentage owned by parent company",
+                        "AI-instruction": "Extract the ownership stake as a percentage (e.g., 100 for wholly-owned, 51 for majority stake).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "principal_activity",
+                        "data_type": "text",
+                        "description": "Main business activity of the subsidiary",
+                        "AI-instruction": "Extract a brief description of what this subsidiary does (e.g., 'Manufacturing', 'Sales and distribution', 'Holding company').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "is_material",
+                        "data_type": "boolean",
+                        "description": "Whether the subsidiary is considered material",
+                        "AI-instruction": "Determine if this subsidiary is specifically disclosed as material to the group (True) or is just listed (False).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Debt Schedule": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "This field links back to Company Profile. Use the same company legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Profile",
+                            "source_field": "company_legal_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Reference to fiscal year",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_year"
+                        }
+                    },
+                    {
+                        "header": "instrument_identifier",
+                        "data_type": "text",
+                        "description": "Unique identifier for the debt instrument",
+                        "AI-instruction": "Extract the instrument identifier (ISIN, CUSIP, or internal reference). This uniquely identifies this specific debt issuance.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "instrument_name",
+                        "data_type": "text",
+                        "description": "Name or description of the debt instrument",
+                        "AI-instruction": "Extract the name of the debt facility (e.g., 'Senior Secured Notes 2028', 'Revolving Credit Facility', 'Term Loan B').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "debt_type",
+                        "data_type": "text",
+                        "description": "Type of debt instrument",
+                        "AI-instruction": "Classify the debt type: Senior Bond, Subordinated Bond, Bank Loan, Credit Facility, Lease Obligation, Other.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Senior Secured Bond, Senior Unsecured Bond, Subordinated Bond, Convertible Bond, Bank Loan, Revolving Credit Facility, Term Loan, Lease Liability, Other"
+                    },
+                    {
+                        "header": "principal_amount",
+                        "data_type": "currency",
+                        "description": "Outstanding principal amount",
+                        "AI-instruction": "Extract the current outstanding principal balance of this debt instrument.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "currency",
+                        "data_type": "text",
+                        "description": "Currency of the debt",
+                        "AI-instruction": "Extract the currency denomination of the debt (EUR, USD, GBP, etc.).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "EUR, USD, GBP, CHF, JPY, CNY, AUD, CAD, SEK, NOK"
+                    },
+                    {
+                        "header": "interest_rate",
+                        "data_type": "percentage",
+                        "description": "Interest rate or coupon rate",
+                        "AI-instruction": "Extract the interest rate as a percentage. For floating rates, extract the margin over reference rate.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "interest_type",
+                        "data_type": "text",
+                        "description": "Fixed or floating rate",
+                        "AI-instruction": "Determine if the interest rate is Fixed or Floating (variable).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Fixed, Floating, Mixed"
+                    },
+                    {
+                        "header": "maturity_date",
+                        "data_type": "date",
+                        "description": "Final maturity date",
+                        "AI-instruction": "Extract the maturity or repayment date. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "issue_date",
+                        "data_type": "date",
+                        "description": "Date the debt was issued",
+                        "AI-instruction": "Extract the original issue date of this debt instrument. Format as DD-MM-YYYY.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "is_secured",
+                        "data_type": "boolean",
+                        "description": "Whether the debt is secured",
+                        "AI-instruction": "Determine if the debt is secured (True) or unsecured (False) by collateral.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "credit_rating",
+                        "data_type": "text",
+                        "description": "Credit rating if applicable",
+                        "AI-instruction": "Extract the credit rating for this instrument if disclosed (S&P, Moody's, or Fitch notation).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Share Capital": [
+                    {
+                        "header": "company_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to company name",
+                        "AI-instruction": "This field links back to Company Profile. Use the same company legal name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Company Profile",
+                            "source_field": "company_legal_name"
+                        }
+                    },
+                    {
+                        "header": "fiscal_year",
+                        "data_type": "number",
+                        "description": "Reference to fiscal year",
+                        "AI-instruction": "This field links back to Financial Period. Use the same fiscal year.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Financial Period",
+                            "source_field": "fiscal_year"
+                        }
+                    },
+                    {
+                        "header": "share_class",
+                        "data_type": "text",
+                        "description": "Class of shares (e.g., Ordinary, Preference, Class A)",
+                        "AI-instruction": "Extract the share class designation (e.g., 'Ordinary Shares', 'Class A Common Stock', 'Preference Shares').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "authorized_shares",
+                        "data_type": "number",
+                        "description": "Number of shares authorized",
+                        "AI-instruction": "Extract the total number of shares authorized to be issued for this class.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "issued_shares",
+                        "data_type": "number",
+                        "description": "Number of shares issued",
+                        "AI-instruction": "Extract the total number of shares that have been issued for this class.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "outstanding_shares",
+                        "data_type": "number",
+                        "description": "Number of shares outstanding",
+                        "AI-instruction": "Extract the number of shares currently outstanding (issued minus treasury shares).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "par_value",
+                        "data_type": "currency",
+                        "description": "Par or nominal value per share",
+                        "AI-instruction": "Extract the par value or nominal value per share. May be stated as 'no par value'.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "voting_rights",
+                        "data_type": "text",
+                        "description": "Voting rights description",
+                        "AI-instruction": "Extract the voting rights (e.g., 'One vote per share', 'Non-voting', 'Ten votes per share').",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "dividend_rights",
+                        "data_type": "text",
+                        "description": "Dividend rights description",
+                        "AI-instruction": "Extract any special dividend rights or preferences for this share class.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ]
+            }
+        },
+        "master_fields": {
+            "Company Profile": ["company_legal_name", "registration_number"],
+            "Financial Period": ["company_legal_name", "fiscal_year", "fiscal_period"]
+        },
+        "master_instruction_config": {
+            "enabled": true,
+            "text": "This document contains comprehensive financial statements and corporate information. Pay careful attention to:\n\n1. Currency and Scale: Note whether amounts are in thousands, millions, or billions. Maintain the currency notation exactly as presented.\n\n2. Accounting Standards: Different jurisdictions use different accounting standards (IFRS vs GAAP vs local GAAP). Terminology may vary (e.g., 'Turnover' vs 'Revenue', 'Profit' vs 'Income').\n\n3. Negative Values: Watch for parentheses indicating negative numbers, particularly in expenses and losses. Maintain the sign convention.\n\n4. Dates: Format all dates as DD-MM-YYYY. Be aware that fiscal years may not align with calendar years.\n\n5. Comparative Periods: Many statements show current year and prior year side-by-side. Ensure you extract from the correct column.\n\n6. Notes References: Line items often have note references (e.g., Note 15). These provide additional detail but don't need to be extracted as part of the line item name.\n\n7. Subtotals vs Line Items: Distinguish between actual line items and subtotal/total lines. Both may be relevant but serve different purposes.\n\n8. Segment Reporting: Business and geographic segments are usually disclosed in separate notes. Extract each segment as a separate record.\n\n9. Related Party Transactions: These may be disclosed separately and should be noted if material.\n\n10. Rounding: Be aware that figures may be rounded and totals may not sum exactly due to rounding differences."
+        }
+    }
+}

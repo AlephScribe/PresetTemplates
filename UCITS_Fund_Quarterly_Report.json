@@ -1,0 +1,794 @@
+{
+    "UCITS Fund Quarterly Report": {
+        "color": "#2E86AB",
+        "sub_datasets": [
+            {
+                "name": "Fund Information",
+                "multiple": false,
+                "prime_fields": ["fund_legal_name", "isin_code"]
+            },
+            {
+                "name": "Performance Metrics",
+                "multiple": false,
+                "prime_fields": ["fund_legal_name", "reporting_period"]
+            },
+            {
+                "name": "Portfolio Holdings",
+                "multiple": true,
+                "prime_fields": ["fund_legal_name", "reporting_period", "security_isin"]
+            },
+            {
+                "name": "Asset Allocation",
+                "multiple": true,
+                "prime_fields": ["fund_legal_name", "reporting_period", "asset_class"]
+            },
+            {
+                "name": "Geographic Exposure",
+                "multiple": true,
+                "prime_fields": ["fund_legal_name", "reporting_period", "country_code"]
+            },
+            {
+                "name": "Risk Indicators",
+                "multiple": false,
+                "prime_fields": ["fund_legal_name", "reporting_period"]
+            },
+            {
+                "name": "Top Contributors",
+                "multiple": true,
+                "prime_fields": ["fund_legal_name", "reporting_period", "security_name"]
+            },
+            {
+                "name": "Top Detractors",
+                "multiple": true,
+                "prime_fields": ["fund_legal_name", "reporting_period", "security_name"]
+            }
+        ],
+        "instruction_sets": {
+            "Default": {
+                "Fund Information": [
+                    {
+                        "header": "fund_legal_name",
+                        "data_type": "text",
+                        "description": "The full legal name of the UCITS fund",
+                        "AI-instruction": "Extract the complete legal name of the fund as stated in the document header or fund details section. This is typically found on the first page.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_short_name",
+                        "data_type": "text",
+                        "description": "The marketing or short name of the fund",
+                        "AI-instruction": "Extract the abbreviated or marketing name of the fund if different from the legal name. Often appears in headers or summaries.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "isin_code",
+                        "data_type": "text",
+                        "description": "International Securities Identification Number",
+                        "AI-instruction": "Extract the ISIN code for the fund. This is a 12-character alphanumeric code starting with a country code (e.g., LU1234567890). Look in fund identifiers section.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "bloomberg_ticker",
+                        "data_type": "text",
+                        "description": "Bloomberg ticker symbol for the fund",
+                        "AI-instruction": "Extract the Bloomberg ticker if provided. Usually found in fund identifiers or reference data section.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_currency",
+                        "data_type": "text",
+                        "description": "Base currency of the fund",
+                        "AI-instruction": "Identify the base currency in which the fund is denominated (EUR, USD, GBP, etc.). Look for currency information near NAV or fund details.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "EUR, USD, GBP, CHF, JPY, AUD, CAD, SEK, NOK, DKK"
+                    },
+                    {
+                        "header": "fund_domicile",
+                        "data_type": "text",
+                        "description": "Country where the fund is domiciled",
+                        "AI-instruction": "Extract the domicile country of the fund. Common UCITS domiciles include Luxembourg, Ireland, UK. Look in fund registration details.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Luxembourg, Ireland, United Kingdom, France, Germany, Netherlands, Switzerland, Austria, Sweden, Denmark"
+                    },
+                    {
+                        "header": "management_company",
+                        "data_type": "text",
+                        "description": "Name of the management company",
+                        "AI-instruction": "Extract the name of the asset management company managing the fund. Typically found in fund details or on the cover page.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "investment_manager",
+                        "data_type": "text",
+                        "description": "Name of the investment manager or sub-advisor",
+                        "AI-instruction": "Extract the investment manager's name if different from management company. Some funds have sub-advisors.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "fund_launch_date",
+                        "data_type": "date",
+                        "description": "Date when the fund was launched",
+                        "AI-instruction": "Extract the fund's inception or launch date. Format as DD-MM-YYYY. Usually found in fund overview section.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "ucits_directive_version",
+                        "data_type": "text",
+                        "description": "UCITS directive version the fund complies with",
+                        "AI-instruction": "Identify which UCITS directive the fund follows (UCITS III, IV, V, or VI). Look in regulatory information.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "UCITS III, UCITS IV, UCITS V, UCITS VI"
+                    },
+                    {
+                        "header": "sfdr_classification",
+                        "data_type": "text",
+                        "description": "Sustainable Finance Disclosure Regulation classification",
+                        "AI-instruction": "Extract the SFDR article classification: Article 6 (no sustainability focus), Article 8 (promotes ESG), or Article 9 (sustainable investment objective).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Article 6, Article 8, Article 9, Not Classified"
+                    },
+                    {
+                        "header": "benchmark_index",
+                        "data_type": "text",
+                        "description": "Primary benchmark index",
+                        "AI-instruction": "Extract the name of the benchmark index against which the fund's performance is measured. Common examples: MSCI World, S&P 500, STOXX Europe 600.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Performance Metrics": [
+                    {
+                        "header": "fund_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to the fund's legal name from Fund Information",
+                        "AI-instruction": "This field links back to the Fund Information table. Use the same fund name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Information",
+                            "source_field": "fund_legal_name"
+                        }
+                    },
+                    {
+                        "header": "reporting_period",
+                        "data_type": "text",
+                        "description": "The quarter and year being reported (e.g., Q3 2024)",
+                        "AI-instruction": "Extract the reporting period in format 'Q1 2024', 'Q2 2024', etc. Look at the report header or date section.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "period_end_date",
+                        "data_type": "date",
+                        "description": "Last day of the reporting period",
+                        "AI-instruction": "Extract the end date of the quarter. Format as DD-MM-YYYY. Usually 31-03, 30-06, 30-09, or 31-12.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "nav_per_share",
+                        "data_type": "currency",
+                        "description": "Net Asset Value per share at period end",
+                        "AI-instruction": "Extract the NAV per share as of the period end date. Look in the performance summary or key statistics section.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "total_net_assets",
+                        "data_type": "currency",
+                        "description": "Total fund assets under management",
+                        "AI-instruction": "Extract the total net assets (AUM) of the fund. Often expressed in millions or billions. Include the magnitude.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_1m",
+                        "data_type": "percentage",
+                        "description": "1-month return",
+                        "AI-instruction": "Extract the fund's return over the past 1 month. Should be a percentage value (e.g., 2.5 for 2.5%).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_3m",
+                        "data_type": "percentage",
+                        "description": "3-month (quarterly) return",
+                        "AI-instruction": "Extract the fund's return over the past 3 months (the quarter). Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_ytd",
+                        "data_type": "percentage",
+                        "description": "Year-to-date return",
+                        "AI-instruction": "Extract the year-to-date return as of the period end. Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_1y",
+                        "data_type": "percentage",
+                        "description": "1-year return",
+                        "AI-instruction": "Extract the 1-year trailing return. Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_3y_annualized",
+                        "data_type": "percentage",
+                        "description": "3-year annualized return",
+                        "AI-instruction": "Extract the 3-year annualized return. Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_5y_annualized",
+                        "data_type": "percentage",
+                        "description": "5-year annualized return",
+                        "AI-instruction": "Extract the 5-year annualized return. Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "return_since_inception",
+                        "data_type": "percentage",
+                        "description": "Cumulative return since fund launch",
+                        "AI-instruction": "Extract the total return since the fund's inception. Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "benchmark_return_3m",
+                        "data_type": "percentage",
+                        "description": "Benchmark's 3-month return",
+                        "AI-instruction": "Extract the benchmark index return for the same 3-month period. Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "benchmark_return_ytd",
+                        "data_type": "percentage",
+                        "description": "Benchmark's year-to-date return",
+                        "AI-instruction": "Extract the benchmark index YTD return. Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "benchmark_return_1y",
+                        "data_type": "percentage",
+                        "description": "Benchmark's 1-year return",
+                        "AI-instruction": "Extract the benchmark index 1-year return. Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "tracking_error",
+                        "data_type": "percentage",
+                        "description": "Tracking error vs benchmark",
+                        "AI-instruction": "Extract the tracking error, which measures deviation from the benchmark. Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "information_ratio",
+                        "data_type": "number",
+                        "description": "Information ratio (risk-adjusted excess return)",
+                        "AI-instruction": "Extract the information ratio value. This is a ratio, not a percentage (e.g., 0.85).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "sharpe_ratio",
+                        "data_type": "number",
+                        "description": "Sharpe ratio (risk-adjusted return)",
+                        "AI-instruction": "Extract the Sharpe ratio. This measures return per unit of risk. Usually between -3 and 3.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "total_expense_ratio",
+                        "data_type": "percentage",
+                        "description": "Total Expense Ratio (TER)",
+                        "AI-instruction": "Extract the TER, which represents the total annual fund costs. Should be a percentage (e.g., 0.75 for 0.75%).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "ongoing_charges",
+                        "data_type": "percentage",
+                        "description": "Ongoing charges figure",
+                        "AI-instruction": "Extract the ongoing charges figure (OCF), similar to TER. Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Portfolio Holdings": [
+                    {
+                        "header": "fund_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to the fund's legal name",
+                        "AI-instruction": "This field links back to the Fund Information table. Use the same fund name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Information",
+                            "source_field": "fund_legal_name"
+                        }
+                    },
+                    {
+                        "header": "reporting_period",
+                        "data_type": "text",
+                        "description": "Reference to the reporting period",
+                        "AI-instruction": "This field links back to the Performance Metrics table. Use the same reporting period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Performance Metrics",
+                            "source_field": "reporting_period"
+                        }
+                    },
+                    {
+                        "header": "security_name",
+                        "data_type": "text",
+                        "description": "Name of the security/holding",
+                        "AI-instruction": "Extract the full name of each portfolio holding. This will be in the portfolio holdings table, usually listing top 10-50 positions.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "security_isin",
+                        "data_type": "text",
+                        "description": "ISIN code of the security",
+                        "AI-instruction": "Extract the ISIN code for each holding if provided. This is a 12-character code (e.g., US0378331005 for Apple).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "security_ticker",
+                        "data_type": "text",
+                        "description": "Ticker symbol of the security",
+                        "AI-instruction": "Extract the ticker symbol if provided (e.g., AAPL, MSFT). May not always be present in European reports.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "security_type",
+                        "data_type": "text",
+                        "description": "Type of security",
+                        "AI-instruction": "Identify the security type: Equity, Corporate Bond, Government Bond, ETF, Fund, Cash Equivalent, Derivative, etc.",
+                        "extraction_method": "list",
+                        "lookup_enabled": true,
+                        "allowed_values": "",
+                        "lookup_file": "/Users/username/Documents/EagleEye/Lookups/security_types.xlsx",
+                        "lookup_column": "Security_Type_Name",
+                        "key_column": "Security_Type_Code"
+                    },
+                    {
+                        "header": "sector",
+                        "data_type": "text",
+                        "description": "Economic sector classification",
+                        "AI-instruction": "Extract the sector classification (e.g., Technology, Healthcare, Financials). Use GICS or ICB sector names.",
+                        "extraction_method": "list",
+                        "lookup_enabled": true,
+                        "allowed_values": "",
+                        "lookup_file": "/Users/username/Documents/EagleEye/Lookups/gics_sectors.xlsx",
+                        "lookup_column": "Sector_Name",
+                        "key_column": "Sector_Code"
+                    },
+                    {
+                        "header": "country",
+                        "data_type": "text",
+                        "description": "Country of incorporation or primary listing",
+                        "AI-instruction": "Extract the country where the security is domiciled or primarily listed.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "market_value",
+                        "data_type": "currency",
+                        "description": "Market value of the holding",
+                        "AI-instruction": "Extract the market value of this position in the fund's base currency. Usually shown in thousands or millions.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "percentage_of_nav",
+                        "data_type": "percentage",
+                        "description": "Position size as percentage of NAV",
+                        "AI-instruction": "Extract the weight of this holding as a percentage of total NAV (e.g., 3.2 for 3.2%).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "number_of_shares",
+                        "data_type": "number",
+                        "description": "Quantity of shares held",
+                        "AI-instruction": "Extract the number of shares/units held if provided. May be in thousands.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "maturity_date",
+                        "data_type": "date",
+                        "description": "Maturity date for fixed income securities",
+                        "AI-instruction": "For bonds, extract the maturity date. Format as DD-MM-YYYY. Leave blank for equities.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "coupon_rate",
+                        "data_type": "percentage",
+                        "description": "Coupon rate for fixed income securities",
+                        "AI-instruction": "For bonds, extract the coupon rate as a percentage (e.g., 3.5 for 3.5%). Leave blank for equities.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "credit_rating",
+                        "data_type": "text",
+                        "description": "Credit rating for fixed income securities",
+                        "AI-instruction": "For bonds, extract the credit rating (e.g., AAA, AA+, BBB). Use S&P or Moody's notation.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "AAA, AA+, AA, AA-, A+, A, A-, BBB+, BBB, BBB-, BB+, BB, BB-, B+, B, B-, CCC+, CCC, CCC-, CC, C, D, NR"
+                    }
+                ],
+                "Asset Allocation": [
+                    {
+                        "header": "fund_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to the fund's legal name",
+                        "AI-instruction": "This field links back to the Fund Information table. Use the same fund name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Information",
+                            "source_field": "fund_legal_name"
+                        }
+                    },
+                    {
+                        "header": "reporting_period",
+                        "data_type": "text",
+                        "description": "Reference to the reporting period",
+                        "AI-instruction": "This field links back to the Performance Metrics table. Use the same reporting period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Performance Metrics",
+                            "source_field": "reporting_period"
+                        }
+                    },
+                    {
+                        "header": "asset_class",
+                        "data_type": "text",
+                        "description": "Asset class category",
+                        "AI-instruction": "Extract the asset class from the asset allocation breakdown (e.g., Equities, Fixed Income, Cash, Alternatives, Derivatives).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "Equities, Corporate Bonds, Government Bonds, Cash & Cash Equivalents, Derivatives, Commodities, Real Estate, Alternative Investments, Other"
+                    },
+                    {
+                        "header": "allocation_percentage",
+                        "data_type": "percentage",
+                        "description": "Percentage allocated to this asset class",
+                        "AI-instruction": "Extract the percentage of the portfolio allocated to this asset class (e.g., 65.3 for 65.3%).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "allocation_value",
+                        "data_type": "currency",
+                        "description": "Market value allocated to this asset class",
+                        "AI-instruction": "Extract the market value allocated to this asset class in the fund's base currency.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "change_from_previous_quarter",
+                        "data_type": "percentage",
+                        "description": "Change in allocation from previous quarter",
+                        "AI-instruction": "If provided, extract the change in allocation percentage from the previous quarter (e.g., +2.5 or -1.3).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Geographic Exposure": [
+                    {
+                        "header": "fund_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to the fund's legal name",
+                        "AI-instruction": "This field links back to the Fund Information table. Use the same fund name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Information",
+                            "source_field": "fund_legal_name"
+                        }
+                    },
+                    {
+                        "header": "reporting_period",
+                        "data_type": "text",
+                        "description": "Reference to the reporting period",
+                        "AI-instruction": "This field links back to the Performance Metrics table. Use the same reporting period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Performance Metrics",
+                            "source_field": "reporting_period"
+                        }
+                    },
+                    {
+                        "header": "region",
+                        "data_type": "text",
+                        "description": "Geographic region",
+                        "AI-instruction": "Extract the region name from the geographic allocation breakdown (e.g., North America, Europe, Asia Pacific).",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "North America, United States, Europe, Eurozone, United Kingdom, Asia Pacific, Japan, Emerging Markets, Latin America, Middle East & Africa, Other"
+                    },
+                    {
+                        "header": "country_code",
+                        "data_type": "text",
+                        "description": "ISO country code",
+                        "AI-instruction": "Extract the ISO 2-letter country code if provided (e.g., US, GB, DE, JP). Use this for unique identification.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "country_name",
+                        "data_type": "text",
+                        "description": "Full country name",
+                        "AI-instruction": "Extract the full country name from the geographic breakdown.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "exposure_percentage",
+                        "data_type": "percentage",
+                        "description": "Percentage exposure to this geography",
+                        "AI-instruction": "Extract the percentage of the portfolio exposed to this region/country (e.g., 42.1 for 42.1%).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "exposure_value",
+                        "data_type": "currency",
+                        "description": "Market value of exposure",
+                        "AI-instruction": "Extract the market value of exposure to this geography in the fund's base currency.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Risk Indicators": [
+                    {
+                        "header": "fund_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to the fund's legal name",
+                        "AI-instruction": "This field links back to the Fund Information table. Use the same fund name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Information",
+                            "source_field": "fund_legal_name"
+                        }
+                    },
+                    {
+                        "header": "reporting_period",
+                        "data_type": "text",
+                        "description": "Reference to the reporting period",
+                        "AI-instruction": "This field links back to the Performance Metrics table. Use the same reporting period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Performance Metrics",
+                            "source_field": "reporting_period"
+                        }
+                    },
+                    {
+                        "header": "volatility_3y",
+                        "data_type": "percentage",
+                        "description": "3-year annualized volatility",
+                        "AI-instruction": "Extract the 3-year volatility (standard deviation of returns). Should be a percentage value.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "beta",
+                        "data_type": "number",
+                        "description": "Beta vs benchmark",
+                        "AI-instruction": "Extract the beta coefficient, measuring sensitivity to benchmark movements. Usually between 0.5 and 1.5.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "alpha",
+                        "data_type": "percentage",
+                        "description": "Alpha vs benchmark",
+                        "AI-instruction": "Extract the alpha, representing excess return vs benchmark. Can be positive or negative percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "var_95_1day",
+                        "data_type": "percentage",
+                        "description": "1-day Value at Risk (95% confidence)",
+                        "AI-instruction": "Extract the 1-day VaR at 95% confidence level. This is the potential loss percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "max_drawdown",
+                        "data_type": "percentage",
+                        "description": "Maximum drawdown",
+                        "AI-instruction": "Extract the maximum peak-to-trough decline. Should be a negative percentage (e.g., -15.2).",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "srri_rating",
+                        "data_type": "number",
+                        "description": "Synthetic Risk and Reward Indicator (1-7)",
+                        "AI-instruction": "Extract the SRRI rating, which ranges from 1 (lowest risk) to 7 (highest risk). This is required for UCITS KIIDs.",
+                        "extraction_method": "list",
+                        "lookup_enabled": false,
+                        "allowed_values": "1, 2, 3, 4, 5, 6, 7"
+                    },
+                    {
+                        "header": "active_share",
+                        "data_type": "percentage",
+                        "description": "Active share vs benchmark",
+                        "AI-instruction": "Extract the active share, measuring portfolio deviation from benchmark. 0% = index fund, 100% = no overlap.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "portfolio_turnover",
+                        "data_type": "percentage",
+                        "description": "Annual portfolio turnover rate",
+                        "AI-instruction": "Extract the portfolio turnover rate, indicating how frequently holdings change. Should be a percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Top Contributors": [
+                    {
+                        "header": "fund_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to the fund's legal name",
+                        "AI-instruction": "This field links back to the Fund Information table. Use the same fund name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Information",
+                            "source_field": "fund_legal_name"
+                        }
+                    },
+                    {
+                        "header": "reporting_period",
+                        "data_type": "text",
+                        "description": "Reference to the reporting period",
+                        "AI-instruction": "This field links back to the Performance Metrics table. Use the same reporting period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Performance Metrics",
+                            "source_field": "reporting_period"
+                        }
+                    },
+                    {
+                        "header": "rank",
+                        "data_type": "number",
+                        "description": "Ranking of contributor (1 = top)",
+                        "AI-instruction": "Extract the ranking number (1, 2, 3, etc.) for this contributor. Usually top 5-10 are shown.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "security_name",
+                        "data_type": "text",
+                        "description": "Name of the security that contributed positively",
+                        "AI-instruction": "Extract the name of the security from the top contributors section.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "contribution_to_return",
+                        "data_type": "percentage",
+                        "description": "Contribution to portfolio return in basis points or percentage",
+                        "AI-instruction": "Extract the contribution to return, usually shown in basis points (bps) or percentage. Convert bps to percentage if needed.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "average_weight",
+                        "data_type": "percentage",
+                        "description": "Average portfolio weight during period",
+                        "AI-instruction": "Extract the average weight of this security during the quarter. Should be a percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "security_return",
+                        "data_type": "percentage",
+                        "description": "Security's return during the period",
+                        "AI-instruction": "Extract the security's own return during the quarter. Should be a percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ],
+                "Top Detractors": [
+                    {
+                        "header": "fund_legal_name",
+                        "data_type": "text",
+                        "description": "Reference to the fund's legal name",
+                        "AI-instruction": "This field links back to the Fund Information table. Use the same fund name.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Fund Information",
+                            "source_field": "fund_legal_name"
+                        }
+                    },
+                    {
+                        "header": "reporting_period",
+                        "data_type": "text",
+                        "description": "Reference to the reporting period",
+                        "AI-instruction": "This field links back to the Performance Metrics table. Use the same reporting period.",
+                        "extraction_method": "datapoint",
+                        "reference": {
+                            "source_sub_dataset": "Performance Metrics",
+                            "source_field": "reporting_period"
+                        }
+                    },
+                    {
+                        "header": "rank",
+                        "data_type": "number",
+                        "description": "Ranking of detractor (1 = worst)",
+                        "AI-instruction": "Extract the ranking number (1, 2, 3, etc.) for this detractor. Usually top 5-10 worst performers are shown.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "security_name",
+                        "data_type": "text",
+                        "description": "Name of the security that detracted from performance",
+                        "AI-instruction": "Extract the name of the security from the top detractors section.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "contribution_to_return",
+                        "data_type": "percentage",
+                        "description": "Negative contribution to portfolio return",
+                        "AI-instruction": "Extract the contribution to return, usually shown as a negative number in basis points or percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "average_weight",
+                        "data_type": "percentage",
+                        "description": "Average portfolio weight during period",
+                        "AI-instruction": "Extract the average weight of this security during the quarter. Should be a percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    },
+                    {
+                        "header": "security_return",
+                        "data_type": "percentage",
+                        "description": "Security's negative return during the period",
+                        "AI-instruction": "Extract the security's own return during the quarter. Should be a negative percentage.",
+                        "extraction_method": "direct",
+                        "lookup_enabled": false
+                    }
+                ]
+            }
+        },
+        "master_fields": {
+            "Fund Information": ["fund_legal_name", "isin_code"],
+            "Performance Metrics": ["fund_legal_name", "reporting_period"]
+        },
+        "master_instruction_config": {
+            "enabled": true,
+            "text": "This is a UCITS fund quarterly report. Focus on extracting financial performance metrics, portfolio composition, and risk indicators. Pay special attention to regulatory disclosures and standardized metrics. If values are presented in different currencies, maintain the original currency notation. For percentage values, extract the numeric value only (e.g., 3.5 for 3.5%). Dates should be formatted as DD-MM-YYYY. When extracting holdings, ensure you capture the complete top holdings list typically shown in the portfolio breakdown section."
+        }
+    }
+}
