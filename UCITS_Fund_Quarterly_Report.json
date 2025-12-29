@@ -1,5 +1,6 @@
 {
     "UCITS Fund Quarterly Report": {
+	"description": "This is an example dataset for extracting datapoints from UCITS fund reports", 
         "color": "#2E86AB",
         "sub_datasets": [
             {
